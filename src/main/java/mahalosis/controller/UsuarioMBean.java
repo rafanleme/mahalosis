@@ -29,7 +29,7 @@ public class UsuarioMBean implements Serializable {
 	
 	@PostConstruct
 	public void init(){
-		System.out.println("entrou!!! ");
+		System.out.println("entrou!!!!! ");
 	}
 	
 	public String autenticar(){
