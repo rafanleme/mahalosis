@@ -41,6 +41,34 @@
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>6.2</version>
+			<scope>compile</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>all-themes</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.jboss.weld.servlet</groupId>
+		    <artifactId>weld-servlet</artifactId>
+		    <version>3.0.0.Alpha1</version>
+		</dependency>
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>8.0.12</version>
+		</dependency>
+		
+		
+		
 	</dependencies>
+	<repositories>
+		<repository>
+		<id>prime-repo</id>
+		<name>PrimeFaces Maven Repository</name>
+		<url>http://repository.primefaces.org</url>
+		<layout>default</layout>
+		</repository>
+	</repositories>
 </project>
