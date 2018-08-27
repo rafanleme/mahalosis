@@ -32,38 +32,24 @@ public class CaracteristicaDAO {
 		return lista;
 	}
 
-	public boolean inserir(Caracterisica c) {
+	public boolean inserir(Caracterisica c) throws SQLException {
 		if (validarInserir(c)) {
 			String sql = "INSERT INTO caracteristica VALUES (0,?)";
 
-			try {
-				con = ConnectionDB.getConnection();
-				ps = con.prepareStatement(sql);
-				ps.setString(1, c.getDescricao());
-				if (ps.executeUpdate() > 0) {
-					return true;
-				}
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				if (con != null) {
-					try {
-						con.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-
+			con = ConnectionDB.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, c.getDescricao());
+			if (ps.executeUpdate() > 0) {
+				return true;
 			}
+
 		}
 		return false;
 	}
 
 	public boolean validarInserir(Caracterisica c) {
 		String sql = "SELECT * FROM caracteristica " + " WHERE descricao = ?" + " OR descricao = ? ";
-		
+
 		try {
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
@@ -93,54 +79,28 @@ public class CaracteristicaDAO {
 		return false;
 	}
 
-	public boolean editar(Caracterisica c) {
-		if(validarInserir(c)){
+	public boolean editar(Caracterisica c) throws SQLException {
+		if (validarInserir(c)) {
 			String sql = "UPDATE caracteristica " + " SET descricao = ? " + " WHERE codigo = ? ";
-			try {
-				con = ConnectionDB.getConnection();
-				ps = con.prepareStatement(sql);
-				ps.setString(1, c.getDescricao());
-				ps.setInt(2, c.getCodigo());
-				if (ps.executeUpdate() > 0) {
-					return true;
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				if (con != null) {
-					try {
-						con.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
+			con = ConnectionDB.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, c.getDescricao());
+			ps.setInt(2, c.getCodigo());
+			if (ps.executeUpdate() > 0) {
+				return true;
 			}
 		}
 		return false;
 
 	}
 
-	public boolean excluir(Caracterisica c) {
+	public boolean excluir(Caracterisica c) throws SQLException {
 		String sql = "DELETE FROM caracteristica " + " WHERE codigo = ?";
-		try {
-			con = ConnectionDB.getConnection();
-			ps = con.prepareStatement(sql);
-			ps.setInt(1, c.getCodigo());
-			if (ps.executeUpdate() > 0) {
-				return true;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		ps.setInt(1, c.getCodigo());
+		if (ps.executeUpdate() > 0) {
+			return true;
 		}
 		return false;
 

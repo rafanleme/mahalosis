@@ -16,11 +16,12 @@
 				<p:toolbar>
 					<f:facet name="left">
 						<p:commandButton id="btSalvar" update=":formL,:formI" value="Salvar"
-							disabled="#{caracteristicaMBean.novaC.descricao == null or caracteristicaMBean.novaC.descricao eq ''}"
+							disabled="#{caracteristicaMBean.novaC.descricao == null}"
 							actionListener="#{caracteristicaMBean.salvar()}"
 							icon="ui-icon-disk" />
 
-						<p:commandButton value="Limpar" immediate="true"
+						<p:commandButton value="Limpar" id="btLimpar"
+							disabled="#{caracteristicaMBean.novaC.descricao == null}"
 							actionListener="#{caracteristicaMBean.limpar}"
 							update=":formI,:formL" icon="ui-icon-closethick" />
 
@@ -36,7 +37,7 @@
 						requiredMessage="Campo descrição obrigatório!"
 						value="#{caracteristicaMBean.novaC.descricao}"
 						placeholder="Exemplo: flores">
-						<f:ajax event="keyup" render="btSalvar"/>
+						<p:ajax event="keyup" update="btSalvar,btLimpar" />
 						</p:inputText>
 					<p:message for="descricao" />
 				</p:panelGrid>

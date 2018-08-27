@@ -51,34 +51,42 @@ public class CaracteristicaMBean {
 	}
 	
 	public void excluir(){
-		if(cDao.excluir(selC)){
-			FacesUtils.setMensagem("Excluido com sucesso", "");
-			caracteristicas.remove(selC);
-			limpar();
-		}else{
-			FacesUtils.setMensagem("Problemas ao excluir", "");
+		try {
+			if(cDao.excluir(selC)){
+				FacesUtils.setMensagem("Excluido com sucesso", "");
+				caracteristicas.remove(selC);
+				limpar();
+			}else{
+				FacesUtils.setMensagem("Problemas ao excluir", "");
+			}
+		} catch (SQLException e) {
+			FacesUtils.setMensagem("Ops, ocorreu um erro ao excluir.", "Desculpe, tente novamente mais tarde.");
+			e.printStackTrace();
 		}
 	}
 	
 	
 	public void salvar(){
-		if(metodo.equals("inserir")){
-			if(cDao.inserir(novaC)){
-				FacesUtils.setMensagem("Salvo com sucesso!", "");
-				novaC = new Caracterisica();
-				return;
+		try{
+			if(metodo.equals("inserir")){
+				if(cDao.inserir(novaC)){
+					FacesUtils.setMensagem("Salvo com sucesso!", "");
+					novaC = new Caracterisica();
+					return;
+				}
+			}else if(metodo.equals("editar")){
+				if(cDao.editar(novaC)){
+					FacesUtils.setMensagem("Salvo com sucesso!", "");
+					novaC = new Caracterisica();
+					selC = null;
+					metodo = "inserir";
+					return;
+				}
 			}
-		}else if(metodo.equals("editar")){
-			if(cDao.editar(novaC)){
-				FacesUtils.setMensagem("Salvo com sucesso!", "");
-				novaC = new Caracterisica();
-				selC = null;
-				metodo = "inserir";
-				return;
-			}
+		}catch (SQLException e) {
+			FacesUtils.setMensagem("Ops, ocorreu um erro ao salvar", "Desculpe, tente novamente mais tarde.");
 		}
 		atualizar();
-		FacesUtils.setMensagem(FacesMessage.SEVERITY_ERROR,"Erro ao salvar!", "");
 	}
 	
 	public void atualizar(){
