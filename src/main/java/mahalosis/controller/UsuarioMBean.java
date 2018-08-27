@@ -34,7 +34,7 @@ public class UsuarioMBean implements Serializable {
 	
 	public String autenticar(){
 		try {
-			if(uDao.login(usuario) != null){
+ 			if(uDao.login(usuario) != null){
 				HttpSession session = (HttpSession) FacesContext.getCurrentInstance().
 						getExternalContext().getSession(true);
 				session.setAttribute("logado", true);
@@ -52,8 +52,8 @@ public class UsuarioMBean implements Serializable {
 			}
 			
 		} catch (SQLException e) {
-			FacesUtils.setMensagem(FacesMessage.SEVERITY_ERROR, 
-							"Erro ao logar", "Erro ao consultar banco de dados!");
+			FacesUtils.setMensagem(FacesMessage.SEVERITY_FATAL, 
+							"Opsss, ocorreu um erro.", "Desculpe, tente novamente mais tarde.");
 			e.printStackTrace();
 		}
 		return "";

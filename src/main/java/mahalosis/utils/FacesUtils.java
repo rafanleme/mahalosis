@@ -1,4 +1,6 @@
 package mahalosis.utils;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -16,4 +18,9 @@ public class FacesUtils {
 				new FacesMessage(summary, detail));
 	}
 	
+	public static String removerAcentos(String str) {
+	    String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+	    Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+	    return pattern.matcher(nfdNormalizedString).replaceAll("");
+	}
 }

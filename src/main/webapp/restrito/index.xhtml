@@ -42,6 +42,10 @@
 		    top: 20px;
 		    left: 40%;
 		}
+		
+		.loadingDialog{
+			text-align: center;	
+		}
 	</style>
 </h:head>
 <f:event listener="#{usuarioMBean.isLoged()}" type="preRenderView"/>
@@ -49,6 +53,8 @@
 	<p:growl autoUpdate="true" showDetail="true">
 	</p:growl>
 	<h:form>
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
 		<div class="pGrid">
 			<img src="../imgs/logo_fundo.jpg" class="logoLogin"/>
 			
@@ -60,6 +66,13 @@
 			</p:panelGrid>
 		</div>
 	</h:form>
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="true" styleClass="loadingDialog">
+		<div>
+			<h4>Um momento por favor...</h4>
+			<img src="/mahalosis/imgs/loading.gif" width="80px" alt="" />
+		</div>
+	</p:dialog>
 	<script language="JavaScript">  
 		$(document).ready(function() {
 			$(".pGrid").fadeTo(0,0.2);

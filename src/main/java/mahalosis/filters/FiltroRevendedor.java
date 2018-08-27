@@ -29,11 +29,9 @@ import mahalosis.controller.UsuarioMBean;
 public class FiltroRevendedor implements Filter{
 	
 	
-	private UsuarioMBean usuario;
 	
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-		System.out.println(usuario);
 	}
 
 	@Override
@@ -64,10 +62,6 @@ public class FiltroRevendedor implements Filter{
 	public void destroy() {
 		// TODO Auto-generated method stub
 
-	}
-
-	public void setUsuario(UsuarioMBean login) {
-		this.usuario = login;
 	}
 
 }

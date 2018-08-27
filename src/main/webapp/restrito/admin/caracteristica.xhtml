@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/basic-template.xhtml">
+	<ui:define name="title">Características</ui:define>
+	<ui:define name="content">
+		<div class="content-left">
+			<h3>Nova caracteristica</h3>
+			<h:form id="formI">
+				<p:toolbar>
+					<f:facet name="left">
+						<p:commandButton id="btSalvar" update=":formL,:formI" value="Salvar"
+							disabled="#{caracteristicaMBean.novaC.descricao == null or caracteristicaMBean.novaC.descricao eq ''}"
+							actionListener="#{caracteristicaMBean.salvar()}"
+							icon="ui-icon-disk" />
+
+						<p:commandButton value="Limpar" immediate="true"
+							actionListener="#{caracteristicaMBean.limpar}"
+							update=":formI,:formL" icon="ui-icon-closethick" />
+
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+
+					</f:facet>
+				</p:toolbar>
+				<p:panelGrid columns="1" styleClass="form">
+					<p:outputLabel for="descricao">Descrição</p:outputLabel>
+					<p:inputText id="descricao" required="true" 
+						requiredMessage="Campo descrição obrigatório!"
+						value="#{caracteristicaMBean.novaC.descricao}"
+						placeholder="Exemplo: flores">
+						<f:ajax event="keyup" render="btSalvar"/>
+						</p:inputText>
+					<p:message for="descricao" />
+				</p:panelGrid>
+			</h:form>
+		</div>
+		<div class="content-right">
+			<h3>Lista de caracteristicas</h3>
+			<h:form id="formL">
+				<p:toolbar>
+					<f:facet name="left">
+						<p:commandButton value="Editar" update=":formI"
+							disabled="#{caracteristicaMBean.selC == null}"
+							actionListener="#{caracteristicaMBean.editar()}"
+							icon="ui-icon-pencil" />
+
+						<p:commandButton value="Excluir" update=":formI,:formL"
+							icon="ui-icon-trash"
+							disabled="#{caracteristicaMBean.selC == null}"
+							actionListener="#{caracteristicaMBean.excluir}">
+							<p:confirm header="Confirmação"
+								message="Tem certeza que deseja excluir?" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:commandButton value="Atualizar" update=":formL"
+							icon="ui-icon-arrowrefresh-1-e"
+							actionListener="#{caracteristicaMBean.atualizar}">
+						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Sim" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+
+					</f:facet>
+				</p:toolbar>
+				<p:dataTable var="caract"
+					value="#{caracteristicaMBean.caracteristicas}"
+					selectionMode="single" selection="#{caracteristicaMBean.selC}"
+					rowKey="#{caract.codigo}" id="caracTable">
+					<p:ajax event="rowSelect" update=":formL"
+						listener="#{caracteristicaMBean.onRowSelect}" />
+					<p:column headerText="Id" sortBy="#{caract.codigo}" width="20%"
+						filterBy="#{caract.codigo}">
+						<h:outputText value="#{caract.codigo}" />
+					</p:column>
+					<p:column headerText="Descrição" sortBy="#{caract.descricao}"
+						filterBy="#{caract.descricao}">
+						<h:outputText value="#{caract.descricao}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+		<p:ajaxStatus onstart="startHandler();"
+			onsuccess="endHandler();"  />
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="true"
+			styleClass="loadingDialog">
+			<div>
+				<h4>Um momento por favor...</h4>
+				<img src="/mahalosis/imgs/loading.gif" width="80px" alt="" />
+			</div>
+		</p:dialog>
+		<script>
+		var ajaxInProgress;
+		function startHandler() {
+		    ajaxInProgress = setTimeout(function () {
+		        PF('statusDialog').show();
+		    }, 1000);
+		}
+		function endHandler() {
+		    clearTimeout(ajaxInProgress);
+		    PF('statusDialog').hide();
+		    ajaxInProgress = null;
+		}
+		</script>
+	</ui:define>
+</ui:composition>
+</html>

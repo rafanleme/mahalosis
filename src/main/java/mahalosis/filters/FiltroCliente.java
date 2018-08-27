@@ -29,23 +29,18 @@ import mahalosis.controller.UsuarioMBean;
 public class FiltroCliente implements Filter{
 	
 	
-	private UsuarioMBean usuario;
 	
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-		System.out.println(usuario);
 	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
-		System.out.println("entrou no filtro Cliente");
-		
+				
 		Boolean logado = (Boolean) ((HttpServletRequest)request).getSession().getAttribute("logado");
 		String perfil = (String) ((HttpServletRequest)request).getSession().getAttribute("perfil");
 		if(logado == null){
-			System.out.println("não esta logado");
 			String contextPath = ((HttpServletRequest)request).getContextPath();
 			System.out.println(contextPath);
 			((HttpServletRequest)request).getSession().setAttribute("mensagem", "Você não está logado!");
@@ -63,10 +58,6 @@ public class FiltroCliente implements Filter{
 	public void destroy() {
 		// TODO Auto-generated method stub
 
-	}
-
-	public void setUsuario(UsuarioMBean login) {
-		this.usuario = login;
 	}
 
 }

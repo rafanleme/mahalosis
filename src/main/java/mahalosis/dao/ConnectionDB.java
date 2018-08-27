@@ -12,18 +12,11 @@ public class ConnectionDB {
 	private static String user = "root";
 	private static String pass = "";
 	
-	public static Connection getConnection(){
-		
-		try {
-			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-			con = DriverManager.getConnection(dns,user,pass);
-			System.out.println("DB conectado com sucesso!");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Erro ao conectar no DB");
-			e.printStackTrace();
-		}
-	
+	public static Connection getConnection () throws SQLException{
+		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		con = DriverManager.getConnection(dns,user,pass);
+		System.out.println("DB conectado com sucesso!");
+		// TODO Auto-generated catch block	
 		return con;
 	}
 }
