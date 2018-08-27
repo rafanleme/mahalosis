@@ -1,16 +1,16 @@
 package mahalosis.vo;
 
-public class Caracterisica {
+public class Caracteristica {
 
 	private Integer codigo;
 	private String descricao;
 	
-	public Caracterisica(Integer codigo, String descricao) {
+	public Caracteristica(Integer codigo, String descricao) {
 		this.codigo = codigo;
 		this.descricao = descricao;
 	}
 	
-	public Caracterisica() {
+	public Caracteristica() {
 		
 	}
 	

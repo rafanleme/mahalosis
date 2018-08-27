@@ -17,7 +17,7 @@ import mahalosis.vo.Caracteristica;
 
 @Named
 @ApplicationScoped
-public class CaracteristicaMBean {
+public class CategoriaMBean {
 	
 	private String metodo = "inserir";
 	

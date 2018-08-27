@@ -11,30 +11,30 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import mahalosis.utils.FacesUtils;
-import mahalosis.vo.Caracteristica;
+import mahalosis.vo.Categoria;
 
-public class CaracteristicaDAO {
+public class CategoriaDAO {
 
 	private Connection con;
 	private PreparedStatement ps;
 
-	public List<Caracteristica> listar() throws SQLException {
-		String sql = " SELECT * FROM caracteristica ";
+	public List<Categoria> listar() throws SQLException {
+		String sql = " SELECT * FROM categoria ";
 
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
-		List<Caracteristica> lista = new ArrayList<Caracteristica>();
+		List<Categoria> lista = new ArrayList<Categoria>();
 		while (rs.next()) {
-			Caracteristica c = new Caracteristica(rs.getInt("codigo"), rs.getString("descricao"));
+			Categoria c = new Categoria(rs.getInt("codigo"), rs.getString("descricao"));
 			lista.add(c);
 		}
 		return lista;
 	}
 
-	public boolean inserir(Caracteristica c) throws SQLException {
+	public boolean inserir(Categoria c) throws SQLException {
 		if (validarInserir(c)) {
-			String sql = "INSERT INTO caracteristica VALUES (0,?)";
+			String sql = "INSERT INTO categoria VALUES (0,?)";
 
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
@@ -47,8 +47,8 @@ public class CaracteristicaDAO {
 		return false;
 	}
 
-	public boolean validarInserir(Caracteristica c) {
-		String sql = "SELECT * FROM caracteristica " + " WHERE descricao = ?" + " OR descricao = ? ";
+	public boolean validarInserir(Categoria c) {
+		String sql = "SELECT * FROM categoria " + " WHERE descricao = ?" + " OR descricao = ? ";
 
 		try {
 			con = ConnectionDB.getConnection();
@@ -58,7 +58,7 @@ public class CaracteristicaDAO {
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage("Já existe uma característica com essa descrição:", c.getDescricao()));
+						new FacesMessage("Já existe uma categoria com essa descrição:", c.getDescricao()));
 				return false;
 			} else {
 				return true;
@@ -79,9 +79,9 @@ public class CaracteristicaDAO {
 		return false;
 	}
 
-	public boolean editar(Caracteristica c) throws SQLException {
+	public boolean editar(Categoria c) throws SQLException {
 		if (validarInserir(c)) {
-			String sql = "UPDATE caracteristica " + " SET descricao = ? " + " WHERE codigo = ? ";
+			String sql = "UPDATE categoria " + " SET descricao = ? " + " WHERE codigo = ? ";
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, c.getDescricao());
@@ -94,8 +94,8 @@ public class CaracteristicaDAO {
 
 	}
 
-	public boolean excluir(Caracteristica c) throws SQLException {
-		String sql = "DELETE FROM caracteristica " + " WHERE codigo = ?";
+	public boolean excluir(Categoria c) throws SQLException {
+		String sql = "DELETE FROM categoria WHERE codigo = ?";
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		ps.setInt(1, c.getCodigo());
