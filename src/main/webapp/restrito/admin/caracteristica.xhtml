@@ -15,15 +15,14 @@
 			<h:form id="formI">
 				<p:toolbar>
 					<f:facet name="left">
-						<p:commandButton id="btSalvar" update=":formL,:formI" value="Salvar"
-							disabled="#{caracteristicaMBean.novaC.descricao == null}"
-							actionListener="#{caracteristicaMBean.salvar()}"
+						<p:commandButton id="btSalvar" update=":formL,formI" value="Salvar"
+							actionListener="#{caracteristicaMBean.salvar}"
 							icon="ui-icon-disk" />
 
-						<p:commandButton value="Limpar" id="btLimpar"
-							disabled="#{caracteristicaMBean.novaC.descricao == null}"
+						<p:commandButton type="reset" value="Limpar" id="btLimpar"
+							update=":formI" immediate="true"
 							actionListener="#{caracteristicaMBean.limpar}"
-							update=":formI,:formL" icon="ui-icon-closethick" />
+							icon="ui-icon-closethick" />
 
 						<span class="ui-separator"> <span
 							class="ui-icon ui-icon-grip-dotted-vertical" />
@@ -37,7 +36,6 @@
 						requiredMessage="Campo descrição obrigatório!"
 						value="#{caracteristicaMBean.novaC.descricao}"
 						placeholder="Exemplo: flores">
-						<p:ajax event="keyup" update="btSalvar,btLimpar" />
 						</p:inputText>
 					<p:message for="descricao" />
 				</p:panelGrid>
@@ -104,6 +102,7 @@
 			</div>
 		</p:dialog>
 		<script>
+		
 		var ajaxInProgress;
 		function startHandler() {
 		    ajaxInProgress = setTimeout(function () {

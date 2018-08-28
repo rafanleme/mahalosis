@@ -72,7 +72,8 @@ public class CaracteristicaMBean {
 				if(cDao.inserir(novaC)){
 					FacesUtils.setMensagem("Salvo com sucesso!", "");
 					novaC = new Caracteristica();
-					return;
+				}else{
+					novaC = new Caracteristica();
 				}
 			}else if(metodo.equals("editar")){
 				if(cDao.editar(novaC)){
@@ -80,7 +81,6 @@ public class CaracteristicaMBean {
 					novaC = new Caracteristica();
 					selC = null;
 					metodo = "inserir";
-					return;
 				}
 			}
 		}catch (SQLException e) {
