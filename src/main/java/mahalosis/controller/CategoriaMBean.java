@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -16,7 +17,7 @@ import mahalosis.utils.FacesUtils;
 import mahalosis.vo.Categoria;
 
 @Named
-@ApplicationScoped
+@RequestScoped
 public class CategoriaMBean {
 	
 	private String metodo = "inserir";

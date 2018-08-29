@@ -11,12 +11,16 @@ public class ConnectionDB {
 	private static String dns = "jdbc:mysql://localhost:3306/mahalo?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 	private static String user = "root";
 	private static String pass = "";
-	
-	public static Connection getConnection () throws SQLException{
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-		con = DriverManager.getConnection(dns,user,pass);
-		System.out.println("DB conectado com sucesso!");
-		// TODO Auto-generated catch block	
-		return con;
+
+	public static Connection getConnection() throws SQLException {
+		if (con == null || con.isClosed()) {
+			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+			con = DriverManager.getConnection(dns, user, pass);
+			System.out.println("DB conectado com sucesso!");
+			// TODO Auto-generated catch block
+			return con;
+		}else{
+			return con;
+		}
 	}
 }

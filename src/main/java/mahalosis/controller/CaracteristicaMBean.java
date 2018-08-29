@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -16,7 +17,7 @@ import mahalosis.utils.FacesUtils;
 import mahalosis.vo.Caracteristica;
 
 @Named
-@ApplicationScoped
+@RequestScoped
 public class CaracteristicaMBean {
 	
 	private String metodo = "inserir";
@@ -78,7 +79,7 @@ public class CaracteristicaMBean {
 			}else if(metodo.equals("editar")){
 				if(cDao.editar(novaC)){
 					FacesUtils.setMensagem("Salvo com sucesso!", "");
-					novaC = new Caracteristica();
+					novaC = new Caracteristica();	
 					selC = null;
 					metodo = "inserir";
 				}
