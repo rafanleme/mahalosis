@@ -92,6 +92,7 @@ public class CaracteristicaMBean {
 	public void atualizar(){
 		try {
 			caracteristicas = cDao.listar();
+			selC = null;
 		} catch (SQLException e) {
 			FacesUtils.setMensagem("Erro ao consultar o BD.", "Tente novamente mais tarde.");
 			e.printStackTrace();

@@ -8,20 +8,20 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/WEB-INF/templates/basic-template.xhtml">
-	<ui:define name="title">Características</ui:define>
+	<ui:define name="title">Categorias</ui:define>
 	<ui:define name="content">
 		<div class="content-left">
-			<h3>Nova caracteristica</h3>
+			<h3>Nova categoria</h3>
 			<h:form id="formI">
 				<p:toolbar>
 					<f:facet name="left">
 						<p:commandButton id="btSalvar" update=":formL,formI" value="Salvar"
-							actionListener="#{caracteristicaMBean.salvar}"
+							actionListener="#{categoriaMBean.salvar}"
 							icon="ui-icon-disk" />
 
 						<p:commandButton type="reset" value="Limpar" id="btLimpar"
 							update=":formI" immediate="true"
-							actionListener="#{caracteristicaMBean.limpar}"
+							actionListener="#{categoriaMBean.limpar}"
 							icon="ui-icon-closethick" />
 
 						<span class="ui-separator"> <span
@@ -34,33 +34,33 @@
 					<p:outputLabel for="descricao">Descrição</p:outputLabel>
 					<p:inputText id="descricao" required="true" 
 						requiredMessage="Campo descrição obrigatório!"
-						value="#{caracteristicaMBean.novaC.descricao}"
-						placeholder="Exemplo: flores">
+						value="#{categoriaMBean.novaC.descricao}"
+						placeholder="Exemplo: pulseiras">
 						</p:inputText>
 					<p:message for="descricao" />
 				</p:panelGrid>
 			</h:form>
 		</div>
 		<div class="content-right">
-			<h3>Lista de caracteristicas</h3>
+			<h3>Lista de categorias</h3>
 			<h:form id="formL">
 				<p:toolbar>
 					<f:facet name="left">
 						<p:commandButton value="Editar" update=":formI"
-							disabled="#{caracteristicaMBean.selC == null}"
-							actionListener="#{caracteristicaMBean.editar()}"
+							disabled="#{categoriaMBean.selC == null}"
+							actionListener="#{categoriaMBean.editar()}"
 							icon="ui-icon-pencil" />
 
 						<p:commandButton value="Excluir" update=":formI,:formL"
 							icon="ui-icon-trash"
-							disabled="#{caracteristicaMBean.selC == null}"
-							actionListener="#{caracteristicaMBean.excluir}">
+							disabled="#{categoriaMBean.selC == null}"
+							actionListener="#{categoriaMBean.excluir}">
 							<p:confirm header="Confirmação"
 								message="Tem certeza que deseja excluir?" icon="ui-icon-alert" />
 						</p:commandButton>
 						<p:commandButton value="Atualizar" update=":formL"
 							icon="ui-icon-arrowrefresh-1-e"
-							actionListener="#{caracteristicaMBean.atualizar}">
+							actionListener="#{categoriaMBean.atualizar}">
 						</p:commandButton>
 						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 							<p:commandButton value="Sim" type="button"
@@ -74,12 +74,12 @@
 
 					</f:facet>
 				</p:toolbar>
-				<p:dataTable var="caract" emptyMessage="Nenhuma característica cadastrada"
-					value="#{caracteristicaMBean.caracteristicas}"
-					selectionMode="single" selection="#{caracteristicaMBean.selC}"
+				<p:dataTable var="caract" emptyMessage="Nenhuma categoria cadastrada"
+					value="#{categoriaMBean.categorias}"
+					selectionMode="single" selection="#{categoriaMBean.selC}"
 					rowKey="#{caract.codigo}" id="caracTable">
 					<p:ajax event="rowSelect" update=":formL"
-						listener="#{caracteristicaMBean.onRowSelect}" />
+						listener="#{categoriaMBean.onRowSelect}" />
 					<p:column headerText="Id" sortBy="#{caract.codigo}" width="20%"
 						filterBy="#{caract.codigo}">
 						<h:outputText value="#{caract.codigo}" />

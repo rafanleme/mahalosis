@@ -11,9 +11,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import mahalosis.dao.CaracteristicaDAO;
+import mahalosis.dao.CategoriaDAO;
 import mahalosis.utils.FacesUtils;
-import mahalosis.vo.Caracteristica;
+import mahalosis.vo.Categoria;
 
 @Named
 @ApplicationScoped
@@ -22,16 +22,16 @@ public class CategoriaMBean {
 	private String metodo = "inserir";
 	
 	@Inject
-	private Caracteristica novaC;
+	private Categoria novaC;
 	
-	private Caracteristica selC;
+	private Categoria selC;
 	@Inject
-	private CaracteristicaDAO cDao;
-	private List<Caracteristica> caracteristicas;
+	private CategoriaDAO cDao;
+	private List<Categoria> categorias;
 	
 	@PostConstruct
 	public void init(){
-		cDao = new CaracteristicaDAO();
+		cDao = new CategoriaDAO();
 		atualizar();
 	}
 	
@@ -46,7 +46,7 @@ public class CategoriaMBean {
 	
 	public void limpar(){
 		selC = null;
-		novaC = new Caracteristica();
+		novaC = new Categoria();
 		metodo = "inserir";
 	}
 	
@@ -54,7 +54,7 @@ public class CategoriaMBean {
 		try {
 			if(cDao.excluir(selC)){
 				FacesUtils.setMensagem("Excluido com sucesso", "");
-				caracteristicas.remove(selC);
+				categorias.remove(selC);
 				limpar();
 			}else{
 				FacesUtils.setMensagem("Problemas ao excluir", "");
@@ -71,16 +71,16 @@ public class CategoriaMBean {
 			if(metodo.equals("inserir")){
 				if(cDao.inserir(novaC)){
 					FacesUtils.setMensagem("Salvo com sucesso!", "");
-					novaC = new Caracteristica();
-					return;
+					novaC = new Categoria();
+				}else{
+					novaC = new Categoria();
 				}
 			}else if(metodo.equals("editar")){
 				if(cDao.editar(novaC)){
 					FacesUtils.setMensagem("Salvo com sucesso!", "");
-					novaC = new Caracteristica();
+					novaC = new Categoria();
 					selC = null;
 					metodo = "inserir";
-					return;
 				}
 			}
 		}catch (SQLException e) {
@@ -91,35 +91,35 @@ public class CategoriaMBean {
 	
 	public void atualizar(){
 		try {
-			caracteristicas = cDao.listar();
+			categorias = cDao.listar();
 		} catch (SQLException e) {
 			FacesUtils.setMensagem("Erro ao consultar o BD.", "Tente novamente mais tarde.");
 			e.printStackTrace();
 		}
 	}
 
-	public Caracteristica getNovaC() {
+	public Categoria getNovaC() {
 		return novaC;
 	}
 
-	public void setNovaC(Caracteristica novaC) {
+	public void setNovaC(Categoria novaC) {
 		this.novaC = novaC;
 	}
 
-	public Caracteristica getSelC() {
+	public Categoria getSelC() {
 		return selC;
 	}
 
-	public void setSelC(Caracteristica selC) {
+	public void setSelC(Categoria selC) {
 		this.selC = selC;
 	}
 
-	public List<Caracteristica> getCaracteristicas() {
-		return caracteristicas;
+	public List<Categoria> getCategorias() {
+		return categorias;
 	}
 
-	public void setCaracteristicas(List<Caracteristica> caracteristicas) {
-		this.caracteristicas = caracteristicas;
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
 	}
 	
 }
