@@ -11,11 +11,8 @@ body{
 	overflow-x:hidden;
 }
 
-.navbar-reprograma{
-  background-color:#ccc;
-   // Animation
-   -webkit-transition: all 0.4s ease;
-   transition: all 0.4s ease;
+.navbar-inverse{
+	background-color: black;	
 }
 
 #navbar-brand-mahalo{
@@ -35,6 +32,7 @@ body{
 
 
 .content{
+	background-image: linear-gradient(black, white);
 	margin-top:50px;
 	margin-bottom: 30px;
 	padding: 6px;
