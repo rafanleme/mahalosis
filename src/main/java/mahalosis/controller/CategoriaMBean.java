@@ -4,11 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -17,7 +13,7 @@ import mahalosis.utils.FacesUtils;
 import mahalosis.vo.Categoria;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class CategoriaMBean {
 	
 	private String metodo = "inserir";
@@ -93,6 +89,7 @@ public class CategoriaMBean {
 	public void atualizar(){
 		try {
 			categorias = cDao.listar();
+			selC = null;
 		} catch (SQLException e) {
 			FacesUtils.setMensagem("Erro ao consultar o BD.", "Tente novamente mais tarde.");
 			e.printStackTrace();

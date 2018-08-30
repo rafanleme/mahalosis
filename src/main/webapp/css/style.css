@@ -76,6 +76,25 @@ body{
     background: rgb(134, 184, 27);
 }
 
+.ui-datatable-even td{
+	background-color: rgb(255,255,255);
+}
+
+.ui-datatable-odd td{
+	background-color: rgb(219,255,183);
+}
+
+.ui-state-highlight td{
+	color: white;
+	font-weight: 500;
+	background-color: rgb(134,184,27);
+}
+
+.ui-state-hover td{
+	background-color: rgb(134, 184, 27);
+}
+
+
 .ui-datatable .ui-column-filter{
 	width: 100% !important; 
 }

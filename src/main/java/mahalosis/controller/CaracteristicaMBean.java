@@ -4,11 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -17,7 +13,7 @@ import mahalosis.utils.FacesUtils;
 import mahalosis.vo.Caracteristica;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class CaracteristicaMBean {
 	
 	private String metodo = "inserir";

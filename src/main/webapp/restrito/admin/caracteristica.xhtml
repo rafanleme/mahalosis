@@ -48,7 +48,7 @@
 					<f:facet name="left">
 						<p:commandButton value="Editar" update=":formI"
 							disabled="#{caracteristicaMBean.selC == null}"
-							actionListener="#{caracteristicaMBean.editar()}"
+							actionListener="#{caracteristicaMBean.editar}"
 							icon="ui-icon-pencil" />
 
 						<p:commandButton value="Excluir" update=":formI,:formL"
@@ -75,15 +75,11 @@
 					</f:facet>
 				</p:toolbar>
 				<p:dataTable var="caract" emptyMessage="Nenhuma característica cadastrada"
-					value="#{caracteristicaMBean.caracteristicas}"
+					value="#{caracteristicaMBean.caracteristicas}" 
 					selectionMode="single" selection="#{caracteristicaMBean.selC}"
 					rowKey="#{caract.codigo}" id="caracTable">
 					<p:ajax event="rowSelect" update=":formL"
 						listener="#{caracteristicaMBean.onRowSelect}" />
-					<p:column headerText="Id" sortBy="#{caract.codigo}" width="20%"
-						filterBy="#{caract.codigo}">
-						<h:outputText value="#{caract.codigo}" />
-					</p:column>
 					<p:column headerText="Descrição" sortBy="#{caract.descricao}"
 						filterBy="#{caract.descricao}">
 						<h:outputText value="#{caract.descricao}" />

@@ -80,10 +80,6 @@
 					rowKey="#{caract.codigo}" id="caracTable">
 					<p:ajax event="rowSelect" update=":formL"
 						listener="#{categoriaMBean.onRowSelect}" />
-					<p:column headerText="Id" sortBy="#{caract.codigo}" width="20%"
-						filterBy="#{caract.codigo}">
-						<h:outputText value="#{caract.codigo}" />
-					</p:column>
 					<p:column headerText="Descrição" sortBy="#{caract.descricao}"
 						filterBy="#{caract.descricao}">
 						<h:outputText value="#{caract.descricao}" />
