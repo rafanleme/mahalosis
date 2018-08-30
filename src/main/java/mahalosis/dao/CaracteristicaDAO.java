@@ -26,7 +26,7 @@ public class CaracteristicaDAO {
 		ResultSet rs = ps.executeQuery();
 		List<Caracteristica> lista = new ArrayList<Caracteristica>();
 		while (rs.next()) {
-			Caracteristica c = new Caracteristica(rs.getInt("codigo"), rs.getString("descricao"));
+			Caracteristica c = new Caracteristica(rs.getInt("cod_caracteristica"), rs.getString("descricao"));
 			lista.add(c);
 		}
 		return lista;
@@ -81,7 +81,7 @@ public class CaracteristicaDAO {
 
 	public boolean editar(Caracteristica c) throws SQLException {
 		if (validarInserir(c)) {
-			String sql = "UPDATE caracteristica " + " SET descricao = ? " + " WHERE codigo = ? ";
+			String sql = "UPDATE caracteristica " + " SET descricao = ? " + " WHERE cod_caracteristica = ? ";
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, c.getDescricao());
@@ -95,7 +95,7 @@ public class CaracteristicaDAO {
 	}
 
 	public boolean excluir(Caracteristica c) throws SQLException {
-		String sql = "DELETE FROM caracteristica " + " WHERE codigo = ?";
+		String sql = "DELETE FROM caracteristica " + " WHERE cod_caracteristica = ?";
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		ps.setInt(1, c.getCodigo());

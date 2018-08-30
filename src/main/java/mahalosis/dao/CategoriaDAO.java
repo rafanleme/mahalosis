@@ -26,7 +26,7 @@ public class CategoriaDAO {
 		ResultSet rs = ps.executeQuery();
 		List<Categoria> lista = new ArrayList<Categoria>();
 		while (rs.next()) {
-			Categoria c = new Categoria(rs.getInt("codigo"), rs.getString("descricao"));
+			Categoria c = new Categoria(rs.getInt("cod_categoria"), rs.getString("descricao"));
 			lista.add(c);
 		}
 		return lista;
@@ -81,7 +81,7 @@ public class CategoriaDAO {
 
 	public boolean editar(Categoria c) throws SQLException {
 		if (validarInserir(c)) {
-			String sql = "UPDATE categoria " + " SET descricao = ? " + " WHERE codigo = ? ";
+			String sql = "UPDATE categoria " + " SET descricao = ? " + " WHERE cod_categoria = ? ";
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, c.getDescricao());
@@ -95,7 +95,7 @@ public class CategoriaDAO {
 	}
 
 	public boolean excluir(Categoria c) throws SQLException {
-		String sql = "DELETE FROM categoria WHERE codigo = ?";
+		String sql = "DELETE FROM categoria WHERE cod_categoria = ?";
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		ps.setInt(1, c.getCodigo());
