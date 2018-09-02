@@ -76,6 +76,7 @@
 				</p:toolbar>
 				<p:dataTable var="caract" emptyMessage="Nenhuma categoria cadastrada"
 					value="#{categoriaMBean.categorias}"
+					filteredValue="#{categoriaMBean.filterCategorias}"
 					selectionMode="single" selection="#{categoriaMBean.selC}"
 					rowKey="#{caract.codigo}" id="caracTable">
 					<p:ajax event="rowSelect" update=":formL"

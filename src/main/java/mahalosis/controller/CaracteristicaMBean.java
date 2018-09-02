@@ -24,7 +24,9 @@ public class CaracteristicaMBean {
 	private Caracteristica selC;
 	@Inject
 	private CaracteristicaDAO cDao;
+	
 	private List<Caracteristica> caracteristicas;
+	private List<Caracteristica> filterCaracteristicas;
 	
 	@PostConstruct
 	public void init(){
@@ -118,6 +120,14 @@ public class CaracteristicaMBean {
 
 	public void setCaracteristicas(List<Caracteristica> caracteristicas) {
 		this.caracteristicas = caracteristicas;
+	}
+
+	public List<Caracteristica> getFilterCaracteristicas() {
+		return filterCaracteristicas;
+	}
+
+	public void setFilterCaracteristicas(List<Caracteristica> filterCaracteristicas) {
+		this.filterCaracteristicas = filterCaracteristicas;
 	}
 	
 }

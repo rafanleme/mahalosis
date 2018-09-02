@@ -15,6 +15,7 @@
 
 				<p:dataTable var="cliente" emptyMessage="Nenhum cliente cadastrado"
 					value="#{clienteMBean.clientes}" selectionMode="single"
+					filteredValue="#{clienteMBean.filterClientes}"
 					selection="#{clienteMBean.selC}" rowKey="#{cliente.codigo}"
 					id="caracTable">
 					<p:ajax event="rowSelect" update=":formL"

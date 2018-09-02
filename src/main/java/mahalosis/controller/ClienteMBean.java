@@ -28,6 +28,7 @@ public class ClienteMBean implements Serializable {
 	@Inject
 	private ClienteDAO cDao;
 	private List<Cliente> clientes;
+	private List<Cliente> filterClientes;
 	
 	@PostConstruct
 	public void init(){
@@ -121,6 +122,14 @@ public class ClienteMBean implements Serializable {
 
 	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;
+	}
+
+	public List<Cliente> getFilterClientes() {
+		return filterClientes;
+	}
+
+	public void setFilterClientes(List<Cliente> filterClientes) {
+		this.filterClientes = filterClientes;
 	}
 	
 }

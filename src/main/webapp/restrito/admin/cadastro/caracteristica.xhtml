@@ -75,7 +75,8 @@
 					</f:facet>
 				</p:toolbar>
 				<p:dataTable var="caract" emptyMessage="Nenhuma característica cadastrada"
-					value="#{caracteristicaMBean.caracteristicas}" 
+					value="#{caracteristicaMBean.caracteristicas}"
+					filteredValue="#{caracteristicaMBean.filterCaracteristicas}" 
 					selectionMode="single" selection="#{caracteristicaMBean.selC}"
 					rowKey="#{caract.codigo}" id="caracTable">
 					<p:ajax event="rowSelect" update=":formL"

@@ -25,6 +25,7 @@ public class CategoriaMBean {
 	@Inject
 	private CategoriaDAO cDao;
 	private List<Categoria> categorias;
+	private List<Categoria> filterCategorias;
 	
 	@PostConstruct
 	public void init(){
@@ -118,6 +119,14 @@ public class CategoriaMBean {
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
+	}
+
+	public List<Categoria> getFilterCategorias() {
+		return filterCategorias;
+	}
+
+	public void setFilterCategorias(List<Categoria> filterCategorias) {
+		this.filterCategorias = filterCategorias;
 	}
 	
 }
