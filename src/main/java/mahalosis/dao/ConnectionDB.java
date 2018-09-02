@@ -8,7 +8,9 @@ import javax.swing.plaf.synth.SynthSeparatorUI;
 
 public class ConnectionDB {
 	private static Connection con;
-	private static String dns = "jdbc:mysql://localhost:3306/mahalo?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	private static String dns = "jdbc:mysql://localhost:3306/mahalo?useUnicode=true&"
+			+ "useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&"
+			+ "zeroDateTimeBehavior=convert_to_null";
 	private static String user = "root";
 	private static String pass = "";
 

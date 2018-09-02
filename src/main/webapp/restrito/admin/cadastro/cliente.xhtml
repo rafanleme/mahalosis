@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/basic-template.xhtml">
+	<ui:define name="title">Clientes</ui:define>
+	<ui:define name="content">
+		<h:form id="formL">
+			<div class="content-all">
+
+				<p:dataTable var="cliente" emptyMessage="Nenhum cliente cadastrado"
+					value="#{clienteMBean.clientes}" selectionMode="single"
+					selection="#{clienteMBean.selC}" rowKey="#{cliente.codigo}"
+					id="caracTable">
+					<p:ajax event="rowSelect" update=":formL"
+						listener="#{clienteMBean.onRowSelect}" />
+					<p:column headerText="Nome" sortBy="#{cliente.nome}"
+						filterBy="#{cliente.nome}">
+						<h:outputText value="#{cliente.nome}" />
+					</p:column>
+					<p:column headerText="CPF" sortBy="#{cliente.cpf}"
+						filterBy="#{cliente.cpf}">
+						<h:outputText value="#{cliente.cpf}" />
+					</p:column>
+					<p:column headerText="Cidade" sortBy="#{cliente.cidade.nome}"
+						filterBy="#{cliente.cidade.nome}">
+						<h:outputText value="#{cliente.cidade.nome} - #{cliente.cidade.estado.uf}" />
+					</p:column>
+				</p:dataTable>
+			</div>
+			<p:ajaxStatus onstart="startHandler();" onsuccess="endHandler();" />
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="true"
+				styleClass="loadingDialog">
+				<div>
+					<h4>Um momento por favor...</h4>
+					<img src="/mahalosis/imgs/loading.gif" width="80px" alt="" />
+				</div>
+			</p:dialog>
+		</h:form>
+		<script>
+			var ajaxInProgress;
+			function startHandler() {
+				ajaxInProgress = setTimeout(function() {
+					PF('statusDialog').show();
+				}, 1000);
+			}
+			function endHandler() {
+				clearTimeout(ajaxInProgress);
+				PF('statusDialog').hide();
+				ajaxInProgress = null;
+			}
+		</script>
+	</ui:define>
+</ui:composition>
+</html>

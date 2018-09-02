@@ -1,5 +1,6 @@
 package mahalosis.dao;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,8 +14,9 @@ import javax.faces.context.FacesContext;
 import mahalosis.utils.FacesUtils;
 import mahalosis.vo.Categoria;
 
-public class CategoriaDAO {
+public class CategoriaDAO implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Connection con;
 	private PreparedStatement ps;
 

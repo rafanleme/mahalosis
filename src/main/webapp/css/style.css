@@ -43,14 +43,24 @@ body{
 	margin-right: 6px;
 	padding:4px;
 	border-radius:6px;
-	background-color: rgb(230,230,230);
+	background-color: rgb(230,230,230,0.8);
 }
+
+.content-all{
+	width: 100%;
+	margin-right: 6px;
+	min-height:200px;
+	padding:4px;
+	border-radius:6px;
+	background-color: rgb(230,230,230,0.8);
+}
+
 .content-right{
 	float:right;
 	width: 65%;
 	padding:4px;
 	border-radius:6px;
-	background-color: rgb(230,230,230);
+	background-color: rgb(230,230,230,0.8);
 }
 
 .form{

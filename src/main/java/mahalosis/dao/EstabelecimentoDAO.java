@@ -1,6 +1,5 @@
 package mahalosis.dao;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,31 +11,40 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import mahalosis.utils.FacesUtils;
-import mahalosis.vo.Caracteristica;
+import mahalosis.vo.Estabelecimento;
 
-public class CaracteristicaDAO implements Serializable {
+public class EstabelecimentoDAO {
 
-	private static final long serialVersionUID = 1L;
 	private Connection con;
 	private PreparedStatement ps;
 
-	public List<Caracteristica> listar() throws SQLException {
-		String sql = " SELECT * FROM caracteristica ";
+	public List<Estabelecimento> listar() throws SQLException {
+		String sql = " SELECT * FROM estabelecimento ";
 
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
-		List<Caracteristica> lista = new ArrayList<Caracteristica>();
+		List<Estabelecimento> lista = new ArrayList<Estabelecimento>();
 		while (rs.next()) {
-			Caracteristica c = new Caracteristica(rs.getInt("cod_caracteristica"), rs.getString("descricao"));
-			lista.add(c);
+//			Estabelecimento c = new Estabelecimento(
+//					rs.getInt("cod_estabelecimento"),
+//					rs.getString("descricao"),
+//					rs.getString("endereco"),
+//					rs.getString("bairro"),
+//					rs.getString(""),
+//					rs.getString("descricao"),
+//					rs.getString("descricao"),
+//					rs.getString("descricao"),
+//					rs.getString("descricao")
+//					);
+//			lista.add(c);
 		}
 		return lista;
 	}
 
-	public boolean inserir(Caracteristica c) throws SQLException {
+	public boolean inserir(Estabelecimento c) throws SQLException {
 		if (validarInserir(c)) {
-			String sql = "INSERT INTO caracteristica VALUES (0,?)";
+			String sql = "INSERT INTO estabelecimento VALUES (0,?)";
 
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
@@ -49,8 +57,8 @@ public class CaracteristicaDAO implements Serializable {
 		return false;
 	}
 
-	public boolean validarInserir(Caracteristica c) {
-		String sql = "SELECT * FROM caracteristica " + " WHERE descricao = ?" + " OR descricao = ? ";
+	public boolean validarInserir(Estabelecimento c) {
+		String sql = "SELECT * FROM estabelecimento " + " WHERE descricao = ?" + " OR descricao = ? ";
 
 		try {
 			con = ConnectionDB.getConnection();
@@ -60,7 +68,7 @@ public class CaracteristicaDAO implements Serializable {
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage("Já existe uma característica com essa descrição:", c.getDescricao()));
+						new FacesMessage("Já existe uma estabelecimento com essa descrição:", c.getDescricao()));
 				return false;
 			} else {
 				return true;
@@ -81,9 +89,9 @@ public class CaracteristicaDAO implements Serializable {
 		return false;
 	}
 
-	public boolean editar(Caracteristica c) throws SQLException {
+	public boolean editar(Estabelecimento c) throws SQLException {
 		if (validarInserir(c)) {
-			String sql = "UPDATE caracteristica " + " SET descricao = ? " + " WHERE cod_caracteristica = ? ";
+			String sql = "UPDATE estabelecimento " + " SET descricao = ? " + " WHERE cod_estabelecimento = ? ";
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, c.getDescricao());
@@ -96,8 +104,8 @@ public class CaracteristicaDAO implements Serializable {
 
 	}
 
-	public boolean excluir(Caracteristica c) throws SQLException {
-		String sql = "DELETE FROM caracteristica " + " WHERE cod_caracteristica = ?";
+	public boolean excluir(Estabelecimento c) throws SQLException {
+		String sql = "DELETE FROM estabelecimento WHERE cod_estabelecimento = ?";
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		ps.setInt(1, c.getCodigo());

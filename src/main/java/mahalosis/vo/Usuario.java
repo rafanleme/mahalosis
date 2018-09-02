@@ -11,6 +11,18 @@ public class Usuario implements Serializable {
 	private String perfil;
 	
 	
+	
+	public Usuario(String cpf, String senha, String perfil) {
+		super();
+		this.cpf = cpf;
+		this.senha = senha;
+		this.perfil = perfil;
+	}
+	
+	public Usuario() {
+		
+	}
+	
 	public String getCpf() {
 		return cpf;
 	}

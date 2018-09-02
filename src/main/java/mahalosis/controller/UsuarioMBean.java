@@ -19,58 +19,60 @@ import mahalosis.vo.Usuario;
 @Named
 @SessionScoped
 public class UsuarioMBean implements Serializable {
-	
-	//private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 1L;
 	@Inject
 	private Usuario usuario;
-	
+
 	@Inject
 	private UsuarioDAO uDao;
-	
+
 	@PostConstruct
-	public void init(){
+	public void init() {
 		System.out.println("entrou! ");
 	}
-	
-	public String autenticar(){
+
+	public String autenticar() {
 		try {
- 			if(uDao.login(usuario) != null){
-				HttpSession session = (HttpSession) FacesContext.getCurrentInstance().
-						getExternalContext().getSession(true);
+			if (uDao.login(usuario) != null) {
+				HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
+						.getSession(true);
 				session.setAttribute("logado", true);
 				session.setAttribute("perfil", usuario.getPerfil());
 				switch (usuario.getPerfil()) {
 				case "1":
 					return "admin/index.xhtml?faces-redirect=true";
-					
+
 				default:
 					break;
 				}
-			}else{
-				FacesContext.getCurrentInstance().addMessage(null, 
-						new FacesMessage("Usuário e/ou senha incorretos","Tente Novamente"));
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage("Usuário e/ou senha incorretos", "Tente Novamente"));
 			}
-			
+
 		} catch (SQLException e) {
-			FacesUtils.setMensagem(FacesMessage.SEVERITY_FATAL, 
-							"Opsss, ocorreu um erro.", "Desculpe, tente novamente mais tarde.");
+			FacesUtils.setMensagem(FacesMessage.SEVERITY_FATAL, "Opsss, ocorreu um erro.",
+					"Desculpe, tente novamente mais tarde.");
 			e.printStackTrace();
 		}
 		return "";
 	}
-	
+
 	public Usuario getUsuario() {
 		return usuario;
 	}
-	
-	public boolean isLoged(){
-		String mensagem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("mensagem");
-		
-		if(mensagem != null){
-			FacesContext.getCurrentInstance().addMessage(null, 
-					new FacesMessage(FacesMessage.SEVERITY_WARN,"Acesso negado!",mensagem));
+
+	public boolean isLoged() {
+		String mensagem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
+				.remove("mensagem");
+
+		if (mensagem != null) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Acesso negado!", mensagem));
 			return false;
-		}else{
+		} else {
+			// lembrar de retornar para home
 			return true;
 		}
 	}
@@ -78,8 +80,5 @@ public class UsuarioMBean implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
-	
-	
 
 }
