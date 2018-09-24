@@ -41,6 +41,22 @@ public class EstabelecimentoDAO {
 		}
 		return lista;
 	}
+	
+	public List<Estabelecimento> listarCombo() throws SQLException {
+		String sql = " SELECT cod_estabelecimento, descricao FROM estabelecimento ";
+
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		List<Estabelecimento> lista = new ArrayList<Estabelecimento>();
+		while (rs.next()) {
+			Estabelecimento e = new Estabelecimento();
+			e.setCodigo(rs.getInt("cod_estabelecimento"));
+			e.setDescricao(rs.getString("descricao"));
+			lista.add(e);
+		}
+		return lista;
+	}
 
 	public boolean inserir(Estabelecimento c) throws SQLException {
 		if (validarInserir(c)) {

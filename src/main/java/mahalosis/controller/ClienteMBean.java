@@ -5,13 +5,22 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.context.RequestContext;
+
 import mahalosis.dao.ClienteDAO;
+import mahalosis.dao.EstabelecimentoDAO;
 import mahalosis.utils.FacesUtils;
 import mahalosis.vo.Cliente;
+import mahalosis.vo.Estabelecimento;
+import mahalosis.vo.PessoaFisica;
+import mahalosis.vo.Telefone;
+import mahalosis.vo.Usuario;
 
 @Named
 @ViewScoped
@@ -22,18 +31,40 @@ public class ClienteMBean implements Serializable {
 	private String metodo = "inserir";
 	
 	@Inject
-	private Cliente novaC;
+	private Cliente novoC;
+	
+	@Inject
+	UsuarioMBean usuarioMBean;
+	
+	private Telefone novoT;
+	private List<Estabelecimento> estabelecimentos;
 	
 	private Cliente selC;
 	@Inject
 	private ClienteDAO cDao;
+	private EstabelecimentoDAO eDao;
 	private List<Cliente> clientes;
 	private List<Cliente> filterClientes;
+	
+	private String tipoTel;
 	
 	@PostConstruct
 	public void init(){
 		cDao = new ClienteDAO();
+		eDao = new EstabelecimentoDAO();
+		novoT = new Telefone();
+		carregarEstab();
 		atualizar();
+	}
+	
+	public void carregarEstab(){
+		try {
+			estabelecimentos = eDao.listarCombo();
+		} catch (SQLException e) {
+			FacesUtils.setMensagem("Erro ao consultar BD", "Desculpe, tente novamente mais tarde");
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void onRowSelect(){
@@ -41,54 +72,37 @@ public class ClienteMBean implements Serializable {
 	}
 	
 	public void editar(){
-		novaC = selC;
+		novoC = selC;
 		metodo = "editar";
 	}
 	
 	public void limpar(){
 		selC = null;
-		novaC = new Cliente();
+		novoC = new Cliente();
 		metodo = "inserir";
 	}
-	
-//	public void excluir(){
-//		try {
-//			if(cDao.excluir(selC)){
-//				FacesUtils.setMensagem("Excluido com sucesso", "");
-//				clientes.remove(selC);
-//				limpar();
-//			}else{
-//				FacesUtils.setMensagem("Problemas ao excluir", "");
-//			}
-//		} catch (SQLException e) {
-//			FacesUtils.setMensagem("Ops, ocorreu um erro ao excluir.", "Desculpe, tente novamente mais tarde.");
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	
-//	public void salvar(){
-//		try{
-//			if(metodo.equals("inserir")){
-//				if(cDao.inserir(novaC)){
-//					FacesUtils.setMensagem("Salvo com sucesso!", "");
-//					novaC = new Cliente();
-//				}else{
-//					novaC = new Cliente();
-//				}
-//			}else if(metodo.equals("editar")){
-//				if(cDao.editar(novaC)){
-//					FacesUtils.setMensagem("Salvo com sucesso!", "");
-//					novaC = new Cliente();
-//					selC = null;
-//					metodo = "inserir";
-//				}
-//			}
-//		}catch (SQLException e) {
-//			FacesUtils.setMensagem("Ops, ocorreu um erro ao salvar", "Desculpe, tente novamente mais tarde.");
-//		}
-//		atualizar();
-//	}
+		
+	public void salvarSair(){
+		novoC.setCpf(novoC.getCpf().replaceAll("[.-]", ""));
+		novoT.setCodArea(novoT.getCodArea().replaceAll("[)(]", ""));
+		novoT.setNumero(novoT.getNumero().replace("-", ""));
+		novoT.setTipo(tipoTel);
+		novoC.getTelefones().add(novoT);
+		String cpf = usuarioMBean.getUsuario().getCpf();
+		novoC.setUsuarioCriacao(new PessoaFisica(null, null, null, cpf, null));
+		novoC.setUsuario(new Usuario(novoC.getCpf(), novoC.getCpf().substring(8), "3"));
+		try {
+			cDao.inserir(novoC);
+			FacesUtils.setMensagem("Cliente cadastrado com sucesso!", "");
+			PrimeFaces.current().executeScript("PF('cadastrarDialog').hide()");
+			novoC = new Cliente();
+			atualizar();
+			PrimeFaces.current().ajax().update(":formL:clienteTable");
+		} catch (SQLException e) {
+			FacesUtils.setMensagem("Ops... Erro ao inserir", "Desculpe! Tenta novamente...");
+			e.printStackTrace();
+		}
+	}
 	
 	public void atualizar(){
 		try {
@@ -100,12 +114,12 @@ public class ClienteMBean implements Serializable {
 		}
 	}
 
-	public Cliente getNovaC() {
-		return novaC;
+	public Cliente getNovoC() {
+		return novoC;
 	}
 
-	public void setNovaC(Cliente novaC) {
-		this.novaC = novaC;
+	public void setNovoC(Cliente novaC) {
+		this.novoC = novaC;
 	}
 
 	public Cliente getSelC() {
@@ -131,5 +145,30 @@ public class ClienteMBean implements Serializable {
 	public void setFilterClientes(List<Cliente> filterClientes) {
 		this.filterClientes = filterClientes;
 	}
+
+	public Telefone getNovoT() {
+		return novoT;
+	}
+
+	public void setNovoT(Telefone novoT) {
+		this.novoT = novoT;
+	}
+
+	public String getTipoTel() {
+		return tipoTel;
+	}
+
+	public void setTipoTel(String tipoTel) {
+		this.tipoTel = tipoTel;
+	}
+
+	public List<Estabelecimento> getEstabelecimentos() {
+		return estabelecimentos;
+	}
+
+	public void setEstabelecimentos(List<Estabelecimento> estabelecimentos) {
+		this.estabelecimentos = estabelecimentos;
+	}
+
 	
 }

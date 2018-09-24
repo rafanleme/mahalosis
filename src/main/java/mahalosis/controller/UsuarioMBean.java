@@ -26,12 +26,12 @@ public class UsuarioMBean implements Serializable {
 
 	@Inject
 	private UsuarioDAO uDao;
-
+	
 	@PostConstruct
 	public void init() {
 		System.out.println("entrou! ");
 	}
-
+	
 	public String autenticar() {
 		try {
 			if (uDao.login(usuario) != null) {

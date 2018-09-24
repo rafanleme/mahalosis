@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<div class="content-form-left">
+		<h:form id="formI">
+			<p:panelGrid styleClass="form">
+				<p:row>
+					<p:column colspan="10">
+						<p:outputLabel for="nome">Nome Completo</p:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:inputText id="nome" value="#{clienteMBean.novoC.nome}"
+							placeholder="Exemplo: João Silva" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:outputLabel for="data_nasc">Data de Nascimento</p:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:calendar id="data_nasc" value="#{clienteMBean.novoC.dataNasc}"
+							pattern="dd/MM/yyyy" mask="true" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:outputLabel for="cpf">CPF</p:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:inputMask id="cpf" value="#{clienteMBean.novoC.cpf}"
+							placeholder="Exemplo: 123.456.789-00" mask="999.999.999-99" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:selectOneRadio id="console" value="#{clienteMBean.tipoTel}">
+							<f:selectItem itemLabel=" Telefone" itemValue="tel" />
+							<f:selectItem itemLabel=" Celuar - Principal" itemValue="cel" />
+							<p:ajax event="change" update="numero"></p:ajax>
+						</p:selectOneRadio>
+
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column width="30">
+						<p:outputLabel for="codArea">Cod. Area</p:outputLabel>
+					</p:column>
+					<p:column>
+						<p:outputLabel for="numero">Número</p:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column style="width:100px">
+						<p:inputMask id="codArea" placeholder="(19)"
+							value="#{clienteMBean.novoT.codArea}" mask="(99)" />
+					</p:column>
+					<p:column>
+						<p:inputMask id="numero" value="#{clienteMBean.novoT.numero}"
+							placeholder="99999-9999"
+							mask="#{clienteMBean.tipoTel eq 'cel' ? '99999-9999' : '9999-9999'}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:outputLabel for="estabelecimento">Estabelecimento</p:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:selectOneMenu id="estabelecimento" style="width:100%"
+							value="#{clienteMBean.novoC.estabelecimento.codigo}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{clienteMBean.estabelecimentos}"
+								var="estab" itemLabel="#{estab.descricao}"
+								itemValue="#{estab.codigo}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10" style="text-align:right">
+						<p:commandButton value="Salvar e Sair" ajax="false" icon="ui-icon-disk"
+							actionListener="#{clienteMBean.salvarSair}" update=":formI"
+							style="background-color:blue !important;" />
+						<p:commandButton value="Avançar ->" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+	</div>
+
+
+</ui:composition>

@@ -12,38 +12,101 @@
 	<ui:define name="content">
 		<h:form id="formL">
 			<div class="content-all">
+				<p:toolbar>
+					<f:facet name="left">
+						<p:commandButton type="button" value="Novo"
+							actionListener="#{clienteMBean.carregarEstab}"
+							onclick="PF('cadastrarDialog').show()"
+							icon="ui-icon-plus" />
+
+						<p:commandButton value="Editar"
+							disabled="#{clienteMBean.selC == null}"
+							actionListener="#{clienteMBean.editar}" />
+
+						<p:commandButton value="Excluir" update=":formL"
+							icon="ui-icon-trash" disabled="#{clienteMBean.selC == null}"
+							actionListener="#{clienteMBean.excluir}">
+							<p:confirm header="Confirmação"
+								message="Tem certeza que deseja excluir?" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:commandButton value="Atualizar" update=":formL"
+							icon="ui-icon-arrowrefresh-1-e"
+							actionListener="#{clienteMBean.atualizar}">
+						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Sim" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+
+					</f:facet>
+				</p:toolbar>
 
 				<p:dataTable var="cliente" emptyMessage="Nenhum cliente cadastrado"
-					value="#{clienteMBean.clientes}" selectionMode="single"
+					widgetVar="clienteTable" value="#{clienteMBean.clientes}"
+					selectionMode="single"
 					filteredValue="#{clienteMBean.filterClientes}"
 					selection="#{clienteMBean.selC}" rowKey="#{cliente.codigo}"
-					id="caracTable">
+					id="clienteTable">
 					<p:ajax event="rowSelect" update=":formL"
 						listener="#{clienteMBean.onRowSelect}" />
 					<p:column headerText="Nome" sortBy="#{cliente.nome}"
-						filterBy="#{cliente.nome}">
+						filterBy="#{cliente.nome}" width="15%">
 						<h:outputText value="#{cliente.nome}" />
 					</p:column>
 					<p:column headerText="CPF" sortBy="#{cliente.cpf}"
-						filterBy="#{cliente.cpf}">
-						<h:outputText value="#{cliente.cpf}" />
+						filterBy="#{cliente.cpf}" width="15%">
+						<h:outputText value="#{cliente.getMaskCpf()}" />
+					</p:column>
+					<p:column headerText="Telefone Principal" width="15%">
+						<h:outputText
+							value="(#{cliente.telefones.get(0).codArea}) #{cliente.telefones.get(0).numero}" />
 					</p:column>
 					<p:column headerText="Cidade" sortBy="#{cliente.cidade.nome}"
-						filterBy="#{cliente.cidade.nome}">
-						<h:outputText value="#{cliente.cidade.nome} - #{cliente.cidade.estado.uf}" />
+						filterBy="#{cliente.cidade.nome}" width="10%">
+						<h:outputText
+							value="#{cliente.cidade.nome} - #{cliente.cidade.estado.uf}" />
+					</p:column>
+					<p:column headerText="Estabelecimento" width="20%"
+						sortBy="#{cliente.estabelecimento.descricao}"
+						filterBy="#{cliente.estabelecimento.descricao}">
+						<h:outputText
+							value="#{cliente.estabelecimento.descricao == null ? 'Sem estabelecimento' : cliente.estabelecimento.descricao}" />
+					</p:column>
+					<p:column headerText="Data Cadastro" width="10%"
+						sortBy="#{cliente.dataCadastro}">
+						<h:outputText value="#{cliente.dataCadastro}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Cadastrado por"
+						filterBy="#{cliente.usuarioCriacao.nome}" width="20%"
+						sortBy="#{cliente.usuarioCriacao.nome}">
+						<h:outputText
+							value="#{cliente.usuarioCriacao.nome} - #{cliente.usuarioCriacao.usuario.perfil eq 1 ? 'Sócio' : 'Revendedor'}" />
 					</p:column>
 				</p:dataTable>
 			</div>
-			<p:ajaxStatus onstart="startHandler();" onsuccess="endHandler();" />
-			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
-				closable="false" resizable="false" showHeader="true"
-				styleClass="loadingDialog">
-				<div>
-					<h4>Um momento por favor...</h4>
-					<img src="/mahalosis/imgs/loading.gif" width="80px" alt="" />
-				</div>
-			</p:dialog>
+
 		</h:form>
+		<p:ajaxStatus onstart="startHandler();" onsuccess="endHandler();" />
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="true"
+			styleClass="loadingDialog">
+			<div>
+				<h4>Um momento por favor...</h4>
+				<img src="/mahalosis/imgs/loading.gif" width="80px" alt="" />
+			</div>
+		</p:dialog>
+		<p:hotkey bind="esc" handler="PF('cadastrarDialog').hide()" />
+		<p:dialog widgetVar="cadastrarDialog" modal="true" resizable="false"
+			draggable="false" header="Novo cliente" styleClass="cadastrarDialog">
+			<ui:include src="form_cliente.xhtml" />
+		</p:dialog>
 		<script>
 			var ajaxInProgress;
 			function startHandler() {

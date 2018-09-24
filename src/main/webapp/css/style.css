@@ -22,7 +22,7 @@ body{
 
 .footer{
 	position: fixed;
-	bottom:0;
+	bottom:0; 
 	width: 100%;
 	background-color: black;
 	height: 30px;
@@ -40,6 +40,17 @@ body{
 .content-left{
 	float:left;
 	width: 34%;
+	margin-right: 6px;
+	padding:4px;
+	border-radius:6px;
+	background-color: rgb(230,230,230,0.8);
+}
+
+.content-form-left{
+	float:left;
+	width: 35%;
+	height:50%;
+	overflow:auto !imporant;
 	margin-right: 6px;
 	padding:4px;
 	border-radius:6px;
@@ -69,6 +80,8 @@ body{
 .form input{
 	width: 100%;
 }
+
+
 .ui-growl {
     position: absolute;
     top: 52px;
@@ -109,4 +122,11 @@ body{
 
 .loadingDialog{
 	text-align: center;	
+}
+
+.cadastrarDialog{
+	margin:auto;
+	margin-top:55px;
+	width: 90% !important;
+	height: 90% !important;
 }

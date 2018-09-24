@@ -1,81 +1,60 @@
 package mahalosis.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class Cliente implements Serializable{
+import javax.inject.Inject;
+
+public class Cliente extends PessoaFisica implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Integer codigo;
-	private String nome;
-	private String cpf;
 	private String endereco;
 	private String bairro;
 	private Cidade cidade;
 	private String cep;
+	@Inject
 	private Estabelecimento estabelecimento;
-	private Date dataNasc;
 	private Date dataCadastro;
-	private Usuario usuarioCriacao;
+	private PessoaFisica usuarioCriacao;
 	private Date dataAlterado;
-	private Usuario usuarioAlteracao;
+	private PessoaFisica usuarioAlteracao;
 	private String observacoes;
+	private List<Telefone> telefones;
 	
-	public Cliente(Integer codigo, String nome, String cpf, String endereco, String bairro, Cidade cidade, String cep,
-			Estabelecimento estabelecimento, Date dataNasc, Date dataCadastro, Usuario usuarioCriacao,
-			Date dataAlterado, Usuario usuarioAlteracao, String observacoes) {
-		this.codigo = codigo;
-		this.nome = nome;
-		this.cpf = cpf;
+	public Cliente(Integer codigo, String nome, Date dataNasc, String cpf, Usuario usuario, String endereco,
+			String bairro, Cidade cidade, String cep, Estabelecimento estabelecimento, Date dataCadastro,
+			PessoaFisica usuarioCriacao, Date dataAlterado, PessoaFisica usuarioAlteracao, String observacoes,List<Telefone> telefones) {
+		super(codigo, nome, dataNasc, cpf, usuario);
 		this.endereco = endereco;
+		this.cpf = cpf;
 		this.bairro = bairro;
 		this.cidade = cidade;
 		this.cep = cep;
 		this.estabelecimento = estabelecimento;
-		this.dataNasc = dataNasc;
 		this.dataCadastro = dataCadastro;
 		this.usuarioCriacao = usuarioCriacao;
 		this.dataAlterado = dataAlterado;
 		this.usuarioAlteracao = usuarioAlteracao;
 		this.observacoes = observacoes;
+		this.telefones = telefones;
 	}
 
+	public List<Telefone> getTelefones() {
+		return telefones;
+	}
+
+	public void setTelefones(List<Telefone> telefones) {
+		this.telefones = telefones;
+	}
 
 	public Cliente() {
-		
+		super();
+		estabelecimento = new Estabelecimento();
+		telefones = new ArrayList<Telefone>();
 	}
-
-
-	public Integer getCodigo() {
-		return codigo;
-	}
-
-
-	public void setCodigo(Integer codigo) {
-		this.codigo = codigo;
-	}
-
-
-	public String getNome() {
-		return nome;
-	}
-
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-
-	public String getCpf() {
-		return cpf;
-	}
-
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
 
 	public String getEndereco() {
 		return endereco;
@@ -127,16 +106,6 @@ public class Cliente implements Serializable{
 	}
 
 
-	public Date getDataNasc() {
-		return dataNasc;
-	}
-
-
-	public void setDataNasc(Date dataNasc) {
-		this.dataNasc = dataNasc;
-	}
-
-
 	public Date getDataCadastro() {
 		return dataCadastro;
 	}
@@ -145,17 +114,6 @@ public class Cliente implements Serializable{
 	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
-
-
-	public Usuario getUsuarioCriacao() {
-		return usuarioCriacao;
-	}
-
-
-	public void setUsuarioCriacao(Usuario usuarioCriacao) {
-		this.usuarioCriacao = usuarioCriacao;
-	}
-
 
 	public Date getDataAlterado() {
 		return dataAlterado;
@@ -167,16 +125,6 @@ public class Cliente implements Serializable{
 	}
 
 
-	public Usuario getUsuarioAlteracao() {
-		return usuarioAlteracao;
-	}
-
-
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
-	}
-
-
 	public String getObservacoes() {
 		return observacoes;
 	}
@@ -185,7 +133,22 @@ public class Cliente implements Serializable{
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
 	}
-	
-		
+
+	public PessoaFisica getUsuarioCriacao() {
+		return usuarioCriacao;
+	}
+
+	public void setUsuarioCriacao(PessoaFisica usuarioCriacao) {
+		this.usuarioCriacao = usuarioCriacao;
+	}
+
+	public PessoaFisica getUsuarioAlteracao() {
+		return usuarioAlteracao;
+	}
+
+	public void setUsuarioAlteracao(PessoaFisica usuarioAlteracao) {
+		this.usuarioAlteracao = usuarioAlteracao;
+	}
+
 	
 }
