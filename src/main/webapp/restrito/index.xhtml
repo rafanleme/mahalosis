@@ -50,7 +50,8 @@
 </h:head>
 <f:event listener="#{usuarioMBean.isLoged()}" type="preRenderView"/>
 <h:body>
-	<p:growl autoUpdate="true" showDetail="true">
+	<p:growl showDetail="true">
+		<p:autoUpdate/>
 	</p:growl>
 	<h:form>
 		<p:ajaxStatus onstart="PF('statusDialog').show()"

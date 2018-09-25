@@ -3,8 +3,11 @@
     padding:0;
 }
 
+label{
+	margin: 0px !important;
+}
 
-body{
+html, body{
 	width:100%;
 	height:100%;
 	font-family: 'Quattrocento Sans', sans-serif;
@@ -35,6 +38,7 @@ body{
 	background-image: linear-gradient(black, white);
 	margin-top:50px;
 	margin-bottom: 30px;
+	height:89%;
 	padding: 6px;
 }
 .content-left{
@@ -46,15 +50,36 @@ body{
 	background-color: rgb(230,230,230,0.8);
 }
 
-.content-form-left{
+.form-cliente{
+	margin:auto;
+	height:100%;
+	width:inherit;
+	overflow:auto !imporant;
+	padding:4px;
+	border-radius:6px;
+	background-color: rgb(230,230,230,0.8);
+}
+
+.form-cliente-passo-um{
+	width: 40%;
+}
+.form-cliente-passo-dois{
+	width: 90%;
+}
+
+.form-cliente-passo-dois td{
+	width: 25%;
+}
+
+.content-form-right{
 	float:left;
-	width: 35%;
+	width: 63%;
 	height:50%;
 	overflow:auto !imporant;
 	margin-right: 6px;
 	padding:4px;
 	border-radius:6px;
-	background-color: rgb(230,230,230,0.8);
+	background-color: rgb(230,230,230,0.8);	
 }
 
 .content-all{
@@ -127,6 +152,13 @@ body{
 .cadastrarDialog{
 	margin:auto;
 	margin-top:55px;
-	width: 90% !important;
+	width: 70% !important;
 	height: 90% !important;
+}
+
+.fade-form{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	z-index: 99;
 }

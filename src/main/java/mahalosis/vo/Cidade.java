@@ -10,6 +10,10 @@ public class Cidade implements Serializable{
 	private String nome;
 	private Estado estado;
 	
+	public Cidade() {
+		
+	}
+	
 	public Cidade(Integer codigo, String nome, Estado estado) {
 		super();
 		this.codigo = codigo;

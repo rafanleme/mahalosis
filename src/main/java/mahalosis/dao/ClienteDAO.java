@@ -64,37 +64,41 @@ public class ClienteDAO implements Serializable {
 			Cliente c = new Cliente(rs.getInt("cod_cliente"), rs.getString("nome"), rs.getDate("data_nasc"),
 					rs.getString("cpf"), null, // usuario, não necessário para
 												// esta consulta
-					rs.getString("endereco"), rs.getString("bairro"), ci, rs.getString("cep"), est,
-					rs.getDate("data_cadastro"), pc, rs.getDate("data_alteracao"), null, rs.getString("observacoes"),
-					telefones);
+					rs.getString("endereco"), rs.getString("numero_endereco"), rs.getString("bairro"), ci,
+					rs.getString("cep"), est, rs.getDate("data_cadastro"), pc, rs.getDate("data_alteracao"), null,
+					rs.getString("observacoes"), telefones);
 			lista.add(c);
 		}
 		return lista;
 	}
 
-	public void inserir(Cliente c) throws SQLException {
+	public boolean inserir(Cliente c) throws SQLException {
 		con = ConnectionDB.getConnection();
-		
-		//insere usuario
+
+		// insere usuario
 		String sqlUsu = " INSERT INTO usuario VALUES (?,?,?) ";
 		ps = con.prepareStatement(sqlUsu);
 		ps.setString(1, c.getUsuario().getCpf());
 		ps.setString(2, c.getUsuario().getSenha());
 		ps.setString(3, c.getUsuario().getPerfil());
 		if (ps.executeUpdate() > 0) {
-			//se usuario criado, cria cliente
+			// se usuario criado, cria cliente
 			String sql = " INSERT INTO cliente  (nome,data_nasc,cpf,cod_estabelec,cod_usuario_criacao) "
 					+ "VALUES (?,?,?,?,?) ";
 			ps = con.prepareStatement(sql);
 			ps.setString(1, c.getNome());
 			ps.setDate(2, new Date(c.getDataNasc().getTime()));
 			ps.setString(3, c.getCpf());
-			ps.setInt(4, c.getEstabelecimento().getCodigo());
+			Estabelecimento e = c.getEstabelecimento();
+			if (e.getCodigo() == null) {
+				ps.setString(4, null);
+			} else {
+				ps.setInt(4, e.getCodigo());
+			}
 			ps.setString(5, c.getUsuarioCriacao().getCpf());
 			Telefone t = c.getTelefones().get(0);
-			System.out.println(ps.toString());
 			if (ps.executeUpdate() > 0) {
-				//se cliente criado, adiciona telefones
+				// se cliente criado, adiciona telefones
 				if (t != null) {
 					String sqlTel = " INSERT INTO telefone VALUES (0,?,?,?,1,?,null,null) ";
 					ps = con.prepareStatement(sqlTel);
@@ -102,67 +106,44 @@ public class ClienteDAO implements Serializable {
 					ps.setString(2, t.getNumero());
 					ps.setString(3, t.getTipo());
 					ps.setString(4, c.getCpf());
-					System.out.println(ps.toString());
 					ps.executeUpdate();
 				} else {
 					FacesUtils.setMensagem(FacesMessage.SEVERITY_ERROR, "Ops... Erro ao adicionar telefone",
 							"Desculpe, tente novamente.");
 				}
-
 			}
+			return true;
 		}
+		return false;
 
 	}
 
-	// public boolean inserir(Cliente c) throws SQLException {
-	// if (validarInserir(c)) {
-	// String sql = "INSERT INTO cliente VALUES (0,?)";
-	//
-	// con = ConnectionDB.getConnection();
-	// ps = con.prepareStatement(sql);
-	// ps.setString(1, c.getDescricao());
-	// if (ps.executeUpdate() > 0) {
-	// return true;
-	// }
-	//
-	// }
-	// return false;
-	// }
-	//
-	// public boolean validarInserir(Cliente c) {
-	// String sql = "SELECT * FROM cliente " + " WHERE descricao = ?" + " OR
-	// descricao = ? ";
-	//
-	// try {
-	// con = ConnectionDB.getConnection();
-	// ps = con.prepareStatement(sql);
-	// ps.setString(1, FacesUtils.removerAcentos(c.getDescricao()));
-	// ps.setString(2, c.getDescricao());
-	// ResultSet rs = ps.executeQuery();
-	// if (rs.next()) {
-	// FacesContext.getCurrentInstance().addMessage(null,
-	// new FacesMessage("Já existe uma cliente com essa descrição:",
-	// c.getDescricao()));
-	// return false;
-	// } else {
-	// return true;
-	// }
-	// } catch (SQLException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } finally {
-	// if (con != null) {
-	// try {
-	// con.close();
-	// } catch (SQLException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// }
-	// return false;
-	// }
-	//
+	public boolean atualizaComplemento(Cliente c) throws SQLException {
+		con = ConnectionDB.getConnection();
+
+		String sql = " UPDATE cliente SET endereco = ?,"
+				+ " numero_endereco = ?,"
+				+ " bairro = ?,"
+				+ " cod_cidade = ?,"
+				+ " cep = ?,"
+				+ " observacoes = ? "
+				+ " WHERE cpf = ? ";
+		ps = con.prepareStatement(sql);
+		ps.setString(1, c.getEndereco());
+		ps.setString(2, c.getNumeroEndereco());
+		ps.setString(3, c.getBairro());
+		ps.setInt(4, c.getCidade().getCodigo());
+		ps.setString(5, c.getCep());
+		ps.setString(6, c.getObservacoes());
+		ps.setString(7, c.getCpf());
+		System.out.println(ps.toString());
+		if(ps.executeUpdate() > 0){
+			return true;
+		}		
+		return false;
+	}
+
+
 	// public boolean editar(Cliente c) throws SQLException {
 	// if (validarInserir(c)) {
 	// String sql = "UPDATE cliente " + " SET descricao = ? " + " WHERE

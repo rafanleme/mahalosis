@@ -4,9 +4,12 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-	<div class="content-form-left">
+	<div id="passoUm" class="form-cliente form-cliente-passo-um">
 		<h:form id="formI">
-			<p:panelGrid styleClass="form">
+			<p:panelGrid id="grid" styleClass="form">
+				<f:facet name="header">
+					<p:outputLabel value="Dados principais"></p:outputLabel>
+				</f:facet>
 				<p:row>
 					<p:column colspan="10">
 						<p:outputLabel for="nome">Nome Completo</p:outputLabel>
@@ -15,6 +18,7 @@
 				<p:row>
 					<p:column colspan="10">
 						<p:inputText id="nome" value="#{clienteMBean.novoC.nome}"
+							required="true" requiredMessage="Campo nome obrigarório"
 							placeholder="Exemplo: João Silva" />
 					</p:column>
 				</p:row>
@@ -26,6 +30,7 @@
 				<p:row>
 					<p:column colspan="10">
 						<p:calendar id="data_nasc" value="#{clienteMBean.novoC.dataNasc}"
+							required="true" requiredMessage="Campo data obrigarório"
 							pattern="dd/MM/yyyy" mask="true" />
 					</p:column>
 				</p:row>
@@ -37,14 +42,17 @@
 				<p:row>
 					<p:column colspan="10">
 						<p:inputMask id="cpf" value="#{clienteMBean.novoC.cpf}"
+							required="true" requiredMessage="Campo cpf obrigarório"
 							placeholder="Exemplo: 123.456.789-00" mask="999.999.999-99" />
 					</p:column>
 				</p:row>
 				<p:row>
 					<p:column colspan="10">
-						<p:selectOneRadio id="console" value="#{clienteMBean.tipoTel}">
-							<f:selectItem itemLabel=" Telefone" itemValue="tel" />
-							<f:selectItem itemLabel=" Celuar - Principal" itemValue="cel" />
+						<p:selectOneRadio id="console" required="true"
+							requiredMessage="Campo tipo telefone obrigarório"
+							value="#{clienteMBean.tipoTel}">
+							<f:selectItem itemLabel=" Fixo" itemValue="fix" />
+							<f:selectItem itemLabel=" Celular | Principal" itemValue="cel" />
 							<p:ajax event="change" update="numero"></p:ajax>
 						</p:selectOneRadio>
 
@@ -60,12 +68,14 @@
 				</p:row>
 				<p:row>
 					<p:column style="width:100px">
-						<p:inputMask id="codArea" placeholder="(19)"
+						<p:inputMask id="codArea" placeholder="(19)" required="true"
+							requiredMessage="Campo código de area obrigarório"
 							value="#{clienteMBean.novoT.codArea}" mask="(99)" />
 					</p:column>
 					<p:column>
 						<p:inputMask id="numero" value="#{clienteMBean.novoT.numero}"
-							placeholder="99999-9999"
+							placeholder="99999-9999" required="true"
+							requiredMessage="Campo numero telefone obrigarório"
 							mask="#{clienteMBean.tipoTel eq 'cel' ? '99999-9999' : '9999-9999'}" />
 					</p:column>
 				</p:row>
@@ -87,15 +97,122 @@
 				</p:row>
 				<p:row>
 					<p:column colspan="10" style="text-align:right">
-						<p:commandButton value="Salvar e Sair" ajax="false" icon="ui-icon-disk"
-							actionListener="#{clienteMBean.salvarSair}" update=":formI"
+						<p:commandButton value="Salvar e Sair" icon="ui-icon-disk"
+							actionListener="#{clienteMBean.salvarSair}"
+							update="formL:clienteTable :formI:grid"
 							style="background-color:blue !important;" />
-						<p:commandButton value="Avançar ->" />
+						<p:commandButton value="Avançar ->"
+							update="formL:clienteTable :formI:grid"
+							actionListener="#{clienteMBean.avancar}" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+		</h:form>
+	</div>
+	<div id="passoDois" class="form-cliente form-cliente-passo-dois"
+		style="display: none">
+		<h:form id="formComp">
+			<p:panelGrid id="grid" styleClass="form">
+				<f:facet name="header">
+					<p:outputLabel value="Dados Complementares"></p:outputLabel>
+				</f:facet>
+				<p:row>
+					<p:column style="width:25%;border-style:none !important"></p:column>
+					<p:column style="width:25%;border-style:none !important"></p:column>
+					<p:column style="width:25%;border-style:none !important"></p:column>
+					<p:column style="width:25%;border-style:none !important"></p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="3">
+						<p:outputLabel for="endereco">Endereço</p:outputLabel>
+					</p:column>
+					<p:column>
+						<p:outputLabel for="numero_endereco">Número</p:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="3">
+						<p:inputText id="endereco" value="#{clienteMBean.novoC.endereco}"
+							placeholder="Exemplo: Rua das Flores" />
+					</p:column>
+					<p:column>
+						<p:inputText id="numero_endereco"
+							value="#{clienteMBean.novoC.numeroEndereco}"
+							placeholder="Ex: 71A" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:outputLabel for="bairro">Bairro</p:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:inputText id="bairro" value="#{clienteMBean.novoC.bairro}"
+							placeholder="Exemplo: Jd. São João" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2">
+						<p:outputLabel for="estado">Estado</p:outputLabel>
+					</p:column>
+					<p:column colspan="2">
+						<p:outputLabel for="cidade">Cidade</p:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2">
+						<p:selectOneMenu id="estado" style="width:100%"
+							value="#{clienteMBean.estadoSel.uf}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{clienteMBean.estados}" var="estado"
+								itemLabel="#{estado.nome}" itemValue="#{estado.uf}" />
+							<p:ajax listener="#{clienteMBean.listarCidades}" event="change"
+								update="cidade" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column colspan="2">
+						<p:selectOneMenu id="cidade" style="width:100%"
+							value="#{clienteMBean.novoC.cidade.codigo}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{clienteMBean.cidades}" var="cidade"
+								itemLabel="#{cidade.nome}" itemValue="#{cidade.codigo}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2">
+						<p:outputLabel for="cep">Cep</p:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2">
+						<p:inputMask id="cep" value="#{clienteMBean.novoC.cep}"
+							mask="99999-999" placeholder="Exemplo: 13820-000" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:outputLabel for="observacoes">Observações</p:outputLabel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10">
+						<p:inputTextarea id="observacoes"
+							value="#{clienteMBean.novoC.observacoes}" style="width:100%" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="10" style="text-align:right">
+						<p:commandButton value="Salvar e Sair" icon="ui-icon-disk"
+							actionListener="#{clienteMBean.salvarFim}"
+							update="formL:clienteTable :formI:grid :formComp:grid"
+							style="background-color:blue !important;" />
 					</p:column>
 				</p:row>
 			</p:panelGrid>
 		</h:form>
 	</div>
-
 
 </ui:composition>

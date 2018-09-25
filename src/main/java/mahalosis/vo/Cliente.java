@@ -12,8 +12,9 @@ public class Cliente extends PessoaFisica implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String endereco;
+	private String numeroEndereco;
 	private String bairro;
-	private Cidade cidade;
+	private Cidade cidade = new Cidade();
 	private String cep;
 	@Inject
 	private Estabelecimento estabelecimento;
@@ -24,11 +25,12 @@ public class Cliente extends PessoaFisica implements Serializable{
 	private String observacoes;
 	private List<Telefone> telefones;
 	
-	public Cliente(Integer codigo, String nome, Date dataNasc, String cpf, Usuario usuario, String endereco,
+	public Cliente(Integer codigo, String nome, Date dataNasc, String cpf, Usuario usuario, String endereco, String numeroEndereco,
 			String bairro, Cidade cidade, String cep, Estabelecimento estabelecimento, Date dataCadastro,
 			PessoaFisica usuarioCriacao, Date dataAlterado, PessoaFisica usuarioAlteracao, String observacoes,List<Telefone> telefones) {
 		super(codigo, nome, dataNasc, cpf, usuario);
 		this.endereco = endereco;
+		this.numeroEndereco = numeroEndereco;
 		this.cpf = cpf;
 		this.bairro = bairro;
 		this.cidade = cidade;
@@ -148,6 +150,14 @@ public class Cliente extends PessoaFisica implements Serializable{
 
 	public void setUsuarioAlteracao(PessoaFisica usuarioAlteracao) {
 		this.usuarioAlteracao = usuarioAlteracao;
+	}
+
+	public String getNumeroEndereco() {
+		return numeroEndereco;
+	}
+
+	public void setNumeroEndereco(String numeroEndereco) {
+		this.numeroEndereco = numeroEndereco;
 	}
 
 	

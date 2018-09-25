@@ -15,9 +15,12 @@ import org.primefaces.context.RequestContext;
 
 import mahalosis.dao.ClienteDAO;
 import mahalosis.dao.EstabelecimentoDAO;
+import mahalosis.dao.LocalDAO;
 import mahalosis.utils.FacesUtils;
+import mahalosis.vo.Cidade;
 import mahalosis.vo.Cliente;
 import mahalosis.vo.Estabelecimento;
+import mahalosis.vo.Estado;
 import mahalosis.vo.PessoaFisica;
 import mahalosis.vo.Telefone;
 import mahalosis.vo.Usuario;
@@ -25,64 +28,79 @@ import mahalosis.vo.Usuario;
 @Named
 @ViewScoped
 public class ClienteMBean implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private String metodo = "inserir";
-	
+	private Integer passo = 1;
+
 	@Inject
 	private Cliente novoC;
 	
 	@Inject
-	UsuarioMBean usuarioMBean;
+	private LocalDAO localDAO;
 	
-	private Telefone novoT;
-	private List<Estabelecimento> estabelecimentos;
-	
-	private Cliente selC;
 	@Inject
 	private ClienteDAO cDao;
+	
+
+	@Inject
+	UsuarioMBean usuarioMBean;
+
+	private Telefone novoT;
+	private List<Estabelecimento> estabelecimentos;
+	private List<Estado> estados;
+	private Cliente selC;
 	private EstabelecimentoDAO eDao;
 	private List<Cliente> clientes;
 	private List<Cliente> filterClientes;
+	private Estado estadoSel;
+	private List<Cidade> cidades;
 	
-	private String tipoTel;
-	
+	private String tipoTel = "cel";
+
 	@PostConstruct
-	public void init(){
+	public void init() {
 		cDao = new ClienteDAO();
 		eDao = new EstabelecimentoDAO();
 		novoT = new Telefone();
 		carregarEstab();
+		try {
+			estados = localDAO.listarEstados();
+			estadoSel = new Estado();
+		} catch (SQLException e) {
+			FacesUtils.setMensagem("Ops, erro ao buscar estados", "Desculpe, tente novamente mais tarde");
+			e.printStackTrace();
+		}
 		atualizar();
 	}
-	
-	public void carregarEstab(){
+
+	public void carregarEstab() {
 		try {
 			estabelecimentos = eDao.listarCombo();
 		} catch (SQLException e) {
 			FacesUtils.setMensagem("Erro ao consultar BD", "Desculpe, tente novamente mais tarde");
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	public void onRowSelect(){
-		
+
+	public void onRowSelect() {
+
 	}
-	
-	public void editar(){
+
+	public void editar() {
 		novoC = selC;
 		metodo = "editar";
 	}
-	
-	public void limpar(){
+
+	public void limpar() {
 		selC = null;
 		novoC = new Cliente();
 		metodo = "inserir";
 	}
-		
-	public void salvarSair(){
+
+	public boolean salvarPassoUm() {
 		novoC.setCpf(novoC.getCpf().replaceAll("[.-]", ""));
 		novoT.setCodArea(novoT.getCodArea().replaceAll("[)(]", ""));
 		novoT.setNumero(novoT.getNumero().replace("-", ""));
@@ -92,19 +110,78 @@ public class ClienteMBean implements Serializable {
 		novoC.setUsuarioCriacao(new PessoaFisica(null, null, null, cpf, null));
 		novoC.setUsuario(new Usuario(novoC.getCpf(), novoC.getCpf().substring(8), "3"));
 		try {
-			cDao.inserir(novoC);
-			FacesUtils.setMensagem("Cliente cadastrado com sucesso!", "");
-			PrimeFaces.current().executeScript("PF('cadastrarDialog').hide()");
-			novoC = new Cliente();
-			atualizar();
-			PrimeFaces.current().ajax().update(":formL:clienteTable");
+			if (cDao.inserir(novoC)) {
+				FacesUtils.setMensagem("Cliente cadastrado com sucesso!", "");
+				return true;
+			}
 		} catch (SQLException e) {
 			FacesUtils.setMensagem("Ops... Erro ao inserir", "Desculpe! Tenta novamente...");
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
-	public void atualizar(){
+	public void salvarFim() {
+		novoC.setCep(novoC.getCep().replace("-", ""));
+		try {
+			if(cDao.atualizaComplemento(novoC)){
+				FacesUtils.setMensagem("Cliente salvo", "");
+				PrimeFaces.current().executeScript("PF('cadastrarDialog').hide()");
+				PrimeFaces.current().executeScript("$('#passoUm').show()");
+				PrimeFaces.current().executeScript("$('#passoDois').hide()");
+				
+				reiniciaForm();
+				atualizar();
+				PrimeFaces.current().ajax().update(":formL:clienteTable");
+				
+			}else{
+				FacesUtils.setMensagem("Ops, ocorreu um erro", "Desculpe, estamos trabalhando nisso.");
+			}
+		} catch (SQLException e) {
+			FacesUtils.setMensagem("Ops, ocorreu um erro", "Desculpe, estamos trabalhando nisso.");
+			e.printStackTrace();
+		}
+	}
+	
+	private void reiniciaForm(){
+		novoC = new Cliente();
+		novoT = new Telefone();
+		tipoTel = "cel";
+	}
+
+	public void salvarSair() {
+		if (salvarPassoUm()) {
+			PrimeFaces.current().executeScript("PF('cadastrarDialog').hide()");
+			reiniciaForm();
+			atualizar();
+			PrimeFaces.current().ajax().update(":formL:clienteTable");
+		}
+	}
+
+	public void avancar() {
+		if (salvarPassoUm()) {
+			try {
+				estados = localDAO.listarEstados();
+				estadoSel = new Estado();
+			} catch (SQLException e) {
+				FacesUtils.setMensagem("Ops, erro ao buscar estados", "Desculpe, tente novamente mais tarde");
+				e.printStackTrace();
+			}
+			PrimeFaces.current().executeScript("$('#passoUm').slideUp(400);");
+			PrimeFaces.current().executeScript("setTimeout(function () { $('#passoDois').slideDown();}, 400);");
+		}
+	}
+	
+	public void listarCidades(){
+		try {
+				cidades = localDAO.listarCidadesPorEstado(estadoSel);
+		} catch (SQLException e) {
+			FacesUtils.setMensagem("Ops, ocorreu um erro ao buscar as cidades", "Desculpe, estamos trabalhando nisso.");
+			e.printStackTrace();
+		}
+	}
+
+	public void atualizar() {
 		try {
 			clientes = cDao.listar();
 			selC = null;
@@ -170,5 +247,37 @@ public class ClienteMBean implements Serializable {
 		this.estabelecimentos = estabelecimentos;
 	}
 
-	
+	public Integer getPasso() {
+		return passo;
+	}
+
+	public void setPasso(Integer passo) {
+		this.passo = passo;
+	}
+
+	public List<Estado> getEstados() {
+		return estados;
+	}
+
+	public void setEstados(List<Estado> estados) {
+		this.estados = estados;
+	}
+
+	public Estado getEstadoSel() {
+		return estadoSel;
+	}
+
+	public void setEstadoSel(Estado estadoSel) {
+		this.estadoSel = estadoSel;
+	}
+
+	public List<Cidade> getCidades() {
+		return cidades;
+	}
+
+	public void setCidades(List<Cidade> cidades) {
+		this.cidades = cidades;
+	}
+
+
 }

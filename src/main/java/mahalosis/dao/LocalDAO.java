@@ -1,5 +1,6 @@
 package mahalosis.dao;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,8 +15,9 @@ import mahalosis.utils.FacesUtils;
 import mahalosis.vo.Cidade;
 import mahalosis.vo.Estado;
 
-public class LocalDAO {
-
+public class LocalDAO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	private Connection con;
 	private PreparedStatement ps;
 
@@ -28,7 +30,6 @@ public class LocalDAO {
 		List<Estado> lista = new ArrayList<Estado>();
 		while (rs.next()) {
 			Estado e = new Estado(
-					rs.getInt("cod_estado"),
 					rs.getString("nome"),
 					rs.getString("uf"));
 			
@@ -39,11 +40,13 @@ public class LocalDAO {
 	
 	public List<Cidade> listarCidadesPorEstado(Estado e) throws SQLException{
 		String sql = " SELECT * FROM cidade c "
-				+ " INNER JOIN estado e ON (c.cod_estado = e.cod_estado) "
-				+ "WHERE c.cod_estado =  ";
+				+ " INNER JOIN estado e ON (c.cod_estado = e.uf) "
+				+ "WHERE c.cod_estado = ? ";
 		
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
+		ps.setString(1, e.getUf());
+		System.out.println(ps.toString());
 		ResultSet rs = ps.executeQuery();
 		List<Cidade> lista = new ArrayList<>();
 		while(rs.next()){

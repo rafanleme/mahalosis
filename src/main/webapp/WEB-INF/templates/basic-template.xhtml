@@ -15,7 +15,10 @@
 </h:head>
 
 <body>
-	<p:growl autoUpdate="true" showDetail="true"/>
+	
+	<p:growl showDetail="true">
+		<p:autoUpdate/>
+	</p:growl>
 	<ui:insert name="header">
 		<ui:include src="/WEB-INF/templates/header-admin.xhtml" />
 	</ui:insert>
