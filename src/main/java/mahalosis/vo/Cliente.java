@@ -16,8 +16,7 @@ public class Cliente extends PessoaFisica implements Serializable{
 	private String bairro;
 	private Cidade cidade = new Cidade();
 	private String cep;
-	@Inject
-	private Estabelecimento estabelecimento;
+	private Estabelecimento estabelecimento = new Estabelecimento();
 	private Date dataCadastro;
 	private PessoaFisica usuarioCriacao;
 	private Date dataAlterado;
@@ -160,5 +159,4 @@ public class Cliente extends PessoaFisica implements Serializable{
 		this.numeroEndereco = numeroEndereco;
 	}
 
-	
 }

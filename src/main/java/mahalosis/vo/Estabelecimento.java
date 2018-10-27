@@ -10,23 +10,25 @@ public class Estabelecimento implements Serializable{
 	private Integer codigo;
 	private String descricao;
 	private String endereco;
+	private String numeroEndereco;
 	private String bairro;
-	private Cidade cidade;
+	private Cidade cidade = new Cidade();
 	private String cep;
-	private Cliente cliente_contato;
-	private Usuario usuarioCriacao;
+	private Cliente clienteContato;
+	private PessoaFisica usuarioCriacao;
 	private Date dataCriacao;
 
-	public Estabelecimento(Integer codigo, String descricao, String endereco, String bairro, Cidade cidade, String cep,
-			Cliente cliente_contato, Usuario usuarioCriacao, Date dataCriacao) {
+	public Estabelecimento(Integer codigo, String descricao, String endereco, String numeroEndereco, String bairro, Cidade cidade, String cep,
+			Cliente cliente_contato, PessoaFisica usuarioCriacao, Date dataCriacao) {
 		super();
 		this.codigo = codigo;
 		this.descricao = descricao;
 		this.endereco = endereco;
+		this.numeroEndereco = numeroEndereco;
 		this.bairro = bairro;
 		this.cidade = cidade;
 		this.cep = cep;
-		this.cliente_contato = cliente_contato;
+		this.clienteContato = cliente_contato;
 		this.usuarioCriacao = usuarioCriacao;
 		this.dataCriacao = dataCriacao;
 	}
@@ -75,21 +77,18 @@ public class Estabelecimento implements Serializable{
 		this.cep = cep;
 	}
 
-	public Cliente getCliente_contato() {
-		return cliente_contato;
+	public Cliente getClienteContato() {
+		if(clienteContato == null){
+			clienteContato = new Cliente();
+		}
+		return clienteContato;
 	}
 
-	public void setCliente_contato(Cliente cliente_contato) {
-		this.cliente_contato = cliente_contato;
+	public void setClienteContato(Cliente cliente_contato) {
+		this.clienteContato = cliente_contato;
 	}
 
-	public Usuario getUsuarioCriacao() {
-		return usuarioCriacao;
-	}
-
-	public void setUsuarioCriacao(Usuario usuarioCriacao) {
-		this.usuarioCriacao = usuarioCriacao;
-	}
+	
 
 	public Date getDataCriacao() {
 		return dataCriacao;
@@ -105,6 +104,22 @@ public class Estabelecimento implements Serializable{
 
 	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
+	}
+
+	public PessoaFisica getUsuarioCriacao() {
+		return usuarioCriacao;
+	}
+
+	public void setUsuarioCriacao(PessoaFisica usuarioCriacao) {
+		this.usuarioCriacao = usuarioCriacao;
+	}
+
+	public String getNumeroEndereco() {
+		return numeroEndereco;
+	}
+
+	public void setNumeroEndereco(String numeroEndereco) {
+		this.numeroEndereco = numeroEndereco;
 	}
 	
 	

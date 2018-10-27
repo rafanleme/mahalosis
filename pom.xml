@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.mahalojoias</groupId>
 	<artifactId>mahalosis</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Mahalo Sis</name>
 	<build>
@@ -71,4 +70,5 @@
 		<layout>default</layout>
 		</repository>
 	</repositories>
+	<version>0.0.1</version>
 </project>

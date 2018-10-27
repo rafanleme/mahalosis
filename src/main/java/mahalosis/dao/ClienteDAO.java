@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
+import javax.inject.Named;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import mahalosis.utils.FacesUtils;
 import mahalosis.vo.Cidade;
@@ -71,6 +73,26 @@ public class ClienteDAO implements Serializable {
 		}
 		return lista;
 	}
+	
+	public List<Cliente> buscaComplete(String query) throws SQLException{
+		String sql = " SELECT * FROM cliente WHERE nome LIKE ? ";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		ps.setString(1, query + "%");
+		
+		ResultSet rs = ps.executeQuery();
+		List<Cliente> clientes = new ArrayList<>();
+		while(rs.next()){
+			Cliente c = new Cliente();
+			c.setCpf(rs.getString("cpf"));
+			c.setNome(rs.getString("nome"));
+			
+			clientes.add(c);
+		}
+			
+		return clientes;
+	}
 
 	public boolean inserir(Cliente c) throws SQLException {
 		con = ConnectionDB.getConnection();
@@ -100,7 +122,7 @@ public class ClienteDAO implements Serializable {
 			if (ps.executeUpdate() > 0) {
 				// se cliente criado, adiciona telefones
 				if (t != null) {
-					String sqlTel = " INSERT INTO telefone VALUES (0,?,?,?,1,?,null,null) ";
+					String sqlTel = " INSERT INTO telefone VALUES (0,?,?,?,1,?,null,null,null) ";
 					ps = con.prepareStatement(sqlTel);
 					ps.setString(1, t.getCodArea());
 					ps.setString(2, t.getNumero());
@@ -140,6 +162,23 @@ public class ClienteDAO implements Serializable {
 		if(ps.executeUpdate() > 0){
 			return true;
 		}		
+		return false;
+	}
+	
+	public boolean atualizaEstabelecimento(String cpfCliente, Estabelecimento e) throws SQLException{
+		con = ConnectionDB.getConnection();
+		
+		String sql = " UPDATE cliente SET cod_estabelec = ? "
+				+ " WHERE cpf = ?";
+		
+		ps = con.prepareStatement(sql);
+		ps.setInt(1, e.getCodigo());
+		ps.setString(2, cpfCliente);
+		
+		System.out.println(ps.toString());
+		if(ps.executeUpdate() > 0){
+			return true;
+		}
 		return false;
 	}
 

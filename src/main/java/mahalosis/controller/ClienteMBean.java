@@ -108,7 +108,7 @@ public class ClienteMBean implements Serializable {
 		novoC.getTelefones().add(novoT);
 		String cpf = usuarioMBean.getUsuario().getCpf();
 		novoC.setUsuarioCriacao(new PessoaFisica(null, null, null, cpf, null));
-		novoC.setUsuario(new Usuario(novoC.getCpf(), novoC.getCpf().substring(8), "3"));
+		novoC.setUsuario(new Usuario(novoC.getCpf(), novoC.getCpf().substring(7), "3"));
 		try {
 			if (cDao.inserir(novoC)) {
 				FacesUtils.setMensagem("Cliente cadastrado com sucesso!", "");
