@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/basic-template.xhtml">
+	<ui:define name="title">Fornecedor</ui:define>
+	<ui:define name="content">
+		<div class="content-left">
+			<h3>Cadastro de fornecedor</h3>
+			<h:form id="formI">
+				<p:toolbar>
+					<f:facet name="left">
+						<p:commandButton id="btSalvar" update=":formL,formI"
+							value="Salvar" actionListener="#{fornecedorMBean.salvar}"
+							icon="ui-icon-disk" />
+
+						<p:commandButton type="reset" value="Limpar" id="btLimpar"
+							update=":formI" immediate="true"
+							actionListener="#{fornecedorMBean.limpar}"
+							icon="ui-icon-closethick" />
+
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+
+					</f:facet>
+				</p:toolbar>
+				<p:panelGrid columns="1" styleClass="form">
+					<p:outputLabel for="nome">Nome</p:outputLabel>
+					<p:inputText id="nome" required="true"
+						requiredMessage="Campo nome obrigatório!"
+						value="#{fornecedorMBean.novoF.nome}"
+						placeholder="Exemplo: Alpha Pratas">
+					</p:inputText>
+					<p:message for="nome" />
+
+					<p:outputLabel for="cnpj">CNPJ</p:outputLabel>
+					<p:inputText id="cnpj" value="#{fornecedorMBean.novoF.cnpj}"
+						placeholder="CNPJ somente números">
+					</p:inputText>
+					<p:message for="cnpj" />
+
+					<p:outputLabel for="endereco">Endereço</p:outputLabel>
+					<p:inputText id="endereco"
+						value="#{fornecedorMBean.novoF.endereco}"
+						placeholder="Exemplo: Rua das Flores">
+					</p:inputText>
+					<p:message for="endereco" />
+					
+					<p:outputLabel for="numero">Número</p:outputLabel>
+					<p:inputText id="numero"
+						value="#{fornecedorMBean.novoF.numeroEndereco}"
+						placeholder="Exemplo: 71A">
+					</p:inputText>
+					<p:message for="numero" />
+
+					<p:outputLabel for="bairro">Bairro</p:outputLabel>
+					<p:inputText id="bairro"
+						value="#{fornecedorMBean.novoF.bairro}"
+						placeholder="Exemplo: Jd. das Flores">
+					</p:inputText>
+					<p:message for="bairro" />
+					
+					<p:outputLabel for="estado">Estado</p:outputLabel>
+					<p:column colspan="2">
+						<p:selectOneMenu id="estado" style="width:100%"
+							value="#{localMBean.estadoSel.uf}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{localMBean.estados}" var="estado"
+								itemLabel="#{estado.nome}" itemValue="#{estado.uf}" />
+							<p:ajax listener="#{localMBean.listarCidades}" event="change"
+								update="cidade" />
+						</p:selectOneMenu>
+					</p:column>
+					
+					<p:outputLabel for="cidade">Cidade</p:outputLabel>
+					<p:selectOneMenu id="cidade" style="width:100%"
+						required="true" requiredMessage="Campo obrigatório!"
+						value="#{fornecedorMBean.novoF.cidade.codigo}">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{localMBean.cidades}" var="cidade"
+							itemLabel="#{cidade.nome}" itemValue="#{cidade.codigo}" />
+					</p:selectOneMenu>
+					<p:message for="cidade"/>
+					
+					<p:outputLabel for="cep">Cep</p:outputLabel>
+					<p:inputText id="cep" value="#{fornecedorMBean.novoF.cep}"
+						placeholder="Exemplo: 13820-000">
+					</p:inputText>
+
+					<p:outputLabel for="obs">Observações</p:outputLabel>
+					<p:inputText id="obs" value="#{fornecedorMBean.novoF.observacoes}">
+					</p:inputText>
+
+				</p:panelGrid>
+			</h:form>
+		</div>
+		<div class="content-right">
+			<h3>Lista de fornecedores</h3>
+			<h:form id="formL">
+				<p:toolbar>
+					<f:facet name="left">
+						<p:commandButton value="Editar" update=":formI"
+							disabled="#{fornecedorMBean.selF == null}"
+							actionListener="#{fornecedorMBean.editar()}"
+							icon="ui-icon-pencil" />
+
+						<p:commandButton value="Excluir" update=":formI,:formL"
+							icon="ui-icon-trash" disabled="#{fornecedorMBean.selF == null}"
+							actionListener="#{fornecedorMBean.excluir}">
+							<p:confirm header="Confirmação"
+								message="Tem certeza que deseja excluir?" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:commandButton value="Atualizar" update=":formL"
+							icon="ui-icon-arrowrefresh-1-e"
+							actionListener="#{fornecedorMBean.atualizar}">
+						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Sim" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+
+					</f:facet>
+				</p:toolbar>
+				<p:dataTable var="fornecedor" emptyMessage="Nenhum fornecedor cadastrado"
+					value="#{fornecedorMBean.fornecedores}"
+					filteredValue="#{fornecedorMBean.filterFornecedores}"
+					selectionMode="single" selection="#{fornecedorMBean.selF}"
+					rowKey="#{fornecedor.codigo}" id="caracTable">
+					<p:ajax event="rowSelect" update=":formL"
+						listener="#{fornecedorMBean.onRowSelect}" />
+					<p:column headerText="Nome" sortBy="#{fornecedor.nome}"
+						filterBy="#{fornecedor.nome}" style="width:19%">
+						<h:outputText value="#{fornecedor.nome}" />
+					</p:column>
+					<p:column headerText="Local" sortBy="#{fornecedor.cidade.nome}"
+						filterBy="#{fornecedor.cidade.nome}" style="width:20%">
+						<h:outputText
+							value="#{fornecedor.cidade.nome} - #{fornecedor.cidade.estado.uf}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+		<p:ajaxStatus onstart="startHandler();" onsuccess="endHandler();" />
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="true"
+			styleClass="loadingDialog">
+			<div>
+				<h4>Um momento por favor...</h4>
+				<img src="/mahalosis/imgs/loading.gif" width="80px" alt="" />
+			</div>
+		</p:dialog>
+		<script>
+			var ajaxInProgress;
+			function startHandler() {
+				ajaxInProgress = setTimeout(function() {
+					PF('statusDialog').show();
+				}, 1000);
+			}
+			function endHandler() {
+				clearTimeout(ajaxInProgress);
+				PF('statusDialog').hide();
+				ajaxInProgress = null;
+			}
+		</script>
+	</ui:define>
+</ui:composition>
+</html>
