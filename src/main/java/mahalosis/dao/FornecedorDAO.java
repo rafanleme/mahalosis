@@ -1,5 +1,6 @@
 package mahalosis.dao;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,8 +12,9 @@ import mahalosis.vo.Cidade;
 import mahalosis.vo.Fornecedor;
 import mahalosis.vo.Estado;
 
-public class FornecedorDAO {
+public class FornecedorDAO implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Connection con;
 	private PreparedStatement ps;
 

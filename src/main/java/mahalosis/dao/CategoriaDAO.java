@@ -33,6 +33,8 @@ public class CategoriaDAO implements Serializable{
 		}
 		return lista;
 	}
+	
+	
 
 	public boolean inserir(Categoria c) throws SQLException {
 		if (validarInserir(c)) {

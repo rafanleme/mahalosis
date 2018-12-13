@@ -41,10 +41,10 @@ public class FiltroAdmin implements Filter{
 		String perfil = (String) ((HttpServletRequest)request).getSession().getAttribute("perfil");
 		
 		if(logado == null){
-			String contextPath = ((HttpServletRequest)request).getContextPath();
-			System.out.println(contextPath);
-			((HttpServletRequest)request).getSession().setAttribute("mensagem", "Você não está logado!");
-            ((HttpServletResponse)response).sendRedirect(contextPath + "/restrito/index.xhtml");
+			//String contextPath = ((HttpServletRequest)request).getContextPath();
+			//System.out.println(contextPath);
+			//((HttpServletRequest)request).getSession().setAttribute("mensagem", "Você não está logado!");
+            //((HttpServletResponse)response).sendRedirect(contextPath + "/restrito/index.xhtml");
 		}if(perfil != null && !perfil.equals("1")){
 			request.setAttribute("mensagem", "Você não tem acesso a esta área");
 		}

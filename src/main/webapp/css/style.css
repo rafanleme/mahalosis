@@ -1,35 +1,35 @@
-*  {
-    margin:0;
-    padding:0;
+* {
+	margin: 0;
+	padding: 0;
 }
 
-h3{
+h3 {
 	margin: 5px !important;
 }
 
-label{
+label {
 	margin: 0px !important;
 }
 
-html, body{
-	width:100%;
-	height:100%;
+html, body {
+	width: 100%;
+	height: 100%;
 	font-family: 'Quattrocento Sans', sans-serif;
-	overflow-x:hidden;
+	overflow-x: hidden;
 }
 
-.navbar-inverse{
-	background-color: black;	
+.navbar-inverse {
+	background-color: black;
 }
 
-#navbar-brand-mahalo{
+#navbar-brand-mahalo {
 	height: 48px;
 	margin-top: -13px;
 }
 
-.footer{
+.footer {
 	position: fixed;
-	bottom:0; 
+	bottom: 0;
 	width: 100%;
 	background-color: black;
 	height: 30px;
@@ -37,143 +37,175 @@ html, body{
 	color: gray;
 }
 
-
-.content{
+.content {
 	background-image: linear-gradient(black, white);
 	padding: 6px;
-	margin-top:50px;
-	margin-bottom:30px;
+	margin-top: 50px;
+	margin-bottom: 30px;
 	height: calc(100% - 80px);
 }
-.content-left{
-	float:left;
+
+.content-left {
+	float: left;
 	width: 34%;
 	margin-right: 6px;
-	height:100%;
-	overflow-y:auto;
-	padding:4px;
-	border-radius:6px;
-	background-color: rgb(230,230,230,0.8);
+	height: 100%;
+	overflow-y: auto;
+	padding: 4px;
+	border-radius: 6px;
+	background-color: rgb(230, 230, 230, 0.8);
 }
 
-.form-cliente{
-	margin:auto;
-	height:100%;
-	width:inherit;
-	overflow:auto !imporant;
-	padding:4px;
-	border-radius:6px;
-	background-color: rgb(230,230,230,0.8);
+.form-cliente {
+	margin: auto;
+	height: 100%;
+	width: inherit;
+	overflow: auto!imporant;
+	padding: 4px;
+	border-radius: 6px;
+	background-color: rgb(230, 230, 230, 0.8);
 }
 
-.form-cliente-passo-um{
+.form-cliente-passo-um {
 	width: 40%;
 }
-.form-cliente-passo-dois{
+
+.form-cliente-passo-dois {
 	width: 90%;
 }
 
-.form-cliente-passo-dois td{
+.form-cliente-passo-dois td {
 	width: 25%;
 }
 
-.content-form-right{
-	float:left;
+.content-form-right {
+	float: left;
 	width: 63%;
-	height:50%;
-	overflow:auto !imporant;
+	height: 50%;
+	overflow: auto!imporant;
 	margin-right: 6px;
-	padding:4px;
-	border-radius:6px;
-	background-color: rgb(230,230,230,0.8);	
+	padding: 4px;
+	border-radius: 6px;
+	background-color: rgb(230, 230, 230, 0.8);
 }
 
-.content-all{
+.content-all {
 	width: 100%;
 	margin-right: 6px;
-	min-height:200px;
-	padding:4px;
-	border-radius:6px;
-	background-color: rgb(230,230,230,0.8);
+	min-height: 200px;
+	padding: 4px;
+	border-radius: 6px;
+	background-color: rgb(230, 230, 230, 0.8);
 }
 
-.content-right{
-	float:right;
+.content-right {
+	float: right;
 	width: 65%;
-	padding:4px;
-	height:100%;
-	overflow-y:auto;
-	border-radius:6px;
-	background-color: rgb(230,230,230,0.8);
+	padding: 4px;
+	height: 100%;
+	overflow-y: auto;
+	border-radius: 6px;
+	background-color: rgb(230, 230, 230, 0.8);
 }
 
-.form{
-	width: 100%;
-}
-.form input{
+.form {
 	width: 100%;
 }
 
-ui.autocomplete{
+#form-produto {
+	width: 100%;
+	margin-right: 6px;
+	min-height: 200px;
+	padding: 4px;
+	border-radius: 6px;
+	background-color: rgb(230, 230, 230, 0.8);
+}
+
+.ui-widget .input {
+	width: 100%;
+}
+
+.form input {
+	width: 100%;
+}
+
+ui.autocomplete {
 	width: 100% !important;
 }
 
 .ui-growl {
-    position: absolute;
-    top: 52px;
+	position: absolute;
+	top: 52px;
 }
+
 ::-webkit-scrollbar-track {
-    background-color: black;
+	background-color: black;
 }
+
 ::-webkit-scrollbar {
-    width: 2px;
-    background: gray;
+	width: 2px;
+	background: gray;
 }
+
 ::-webkit-scrollbar-thumb {
-    background: rgb(134, 184, 27);
+	background: rgb(134, 184, 27);
 }
 
-.ui-datatable-even td{
-	background-color: rgb(255,255,255);
+.ui-datatable-even td {
+	background-color: rgb(255, 255, 255);
 }
 
-.ui-datatable-odd td{
-	background-color: rgb(219,255,183);
+.ui-datatable-odd td {
+	background-color: rgb(219, 255, 183);
 }
 
-.ui-state-highlight td{
+.ui-state-highlight td {
 	color: white;
 	font-weight: 500;
-	background-color: rgb(134,184,27);
-}
-
-.ui-state-hover td{
 	background-color: rgb(134, 184, 27);
 }
 
-
-.ui-datatable .ui-column-filter{
-	width: 100% !important; 
+.ui-state-hover td {
+	background-color: rgb(134, 184, 27);
 }
 
-.ui-panelgrid-cell{
+.ui-datatable .ui-column-filter {
+	width: 100% !important;
+}
+
+.ui-panelgrid-cell {
 	padding: 2px !important;
 }
 
-.loadingDialog{
-	text-align: center;	
+.loadingDialog {
+	text-align: center;
 }
 
-.cadastrarDialog{
-	margin:auto;
-	margin-top:55px;
+.cadastrarDialog {
+	margin: auto;
+	margin-top: 55px;
 	width: 70% !important;
 	height: 90% !important;
 }
 
-.fade-form{
+.fade-form {
 	width: 100%;
 	height: 100%;
 	position: relative;
 	z-index: 99;
+}
+
+.foto-principal {
+	border: 2px solid #52a412;
+}
+
+.acoes-foto {
+	width: 200px;
+	height: 50px;
+	background: black;
+	opacity: 0.5;
+	position: absolute;
+	margin: 10px;
+	border-radius: 5px;
+	
 }

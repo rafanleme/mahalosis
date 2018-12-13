@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/basic-template.xhtml">
+	<ui:define name="title">Produtos</ui:define>
+	<ui:define name="content">
+
+		<div id="form-produto"
+			style="width: 99%; margin: auto !important; vertical-align: top">
+			<p:panelGrid style="width:100%;">
+				<p:row>
+					<p:column width="50%" style="vertical-align:top">
+						<h:form id="form-produto">
+
+							<p:toolbar>
+								<f:facet name="left">
+									<p:commandButton value="Voltar" immediate="true"
+										icon="ui-icon-arrowthick-1-w"
+										action="form-produto-foto?faces-redirect=true">
+									</p:commandButton>
+
+									<span class="ui-separator"> <span
+										class="ui-icon ui-icon-grip-dotted-vertical" />
+									</span>
+								</f:facet>
+							</p:toolbar>
+							<p:fileUpload
+								fileUploadListener="#{produtoMBean.handleFileUpload}"
+								mode="advanced" sizeLimit="1000000" multiple="true"
+								label="Escolha a foto" cancelLabel="Cancelar"
+								invalidSizeMessage="Arquivo muito grande" update="@all"
+								invalidFileMessage="Arquivo inválido, escolha um gif, jpg ou png"
+								fileLimit="5" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+						</h:form>
+					</p:column>
+					<p:column>
+						<p:galleria value="#{produtoMBean.fotosSalvas}" var="foto"
+							autoPlay="false" rendered="#{not empty produtoMBean.fotosSalvas}"
+							style="margin:auto" id="galeria" panelWidth="500"
+							panelHeight="400" showCaption="true">
+							<div id="acoes#{foto.nomeArquivo}" class="acoes-foto"></div>
+							<p:graphicImage name="/fotos-produtos/#{foto.path}"
+								id="foto#{foto.nomeArquivo}" height="100%" width="100%"
+								onmouseover="mostrarAcoes('#{foto.nomeArquivo}')"
+								onmouseout="esconderAcoes('#{foto.nomeArquivo}')"
+								alt="#{foto.principal ? 'Foto Principal' : 'Foto'}"
+								title="#{foto.codProduto}" />
+							<p:autoUpdate />
+						</p:galleria>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</div>
+		<script>
+			function mostrarAcoes(nomeArquivo) {
+				document.getElementById("acoes"+nomeArquivo).style.display = "block";
+			}
+			function esconderAcoes(nomeArquivo) {
+				document.getElementById("acoes"+nomeArquivo).style.display = "none";
+			}
+		</script>
+	</ui:define>
+</ui:composition>
+</html>

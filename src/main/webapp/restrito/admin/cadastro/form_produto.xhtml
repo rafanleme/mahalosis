@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/basic-template.xhtml">
+	<ui:define name="title">Produtos</ui:define>
+	<ui:define name="content">
+
+		<div id="form-produto" style="width: 99%; margin: auto !important;">
+			<h:form id="form-produto">
+				<f:metadata>
+					<f:event listener="#{produtoMBean.beginConversation}"
+						type="preRenderView" />
+				</f:metadata>
+				<p:toolbar>
+					<f:facet name="left">
+						<p:commandButton value="Voltar" immediate="true"
+							icon="ui-icon-arrowthick-1-w"
+							action="produto?faces-redirect=true">
+						</p:commandButton>
+
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+						<p:commandButton value="Salvar" icon="ui-icon-disk"
+							action="#{produtoMBean.salvar}" />
+						<p:commandButton value="Limpar" icon="ui-icon-arrowrefresh-1-e"
+							disabled="true" action="#{produtoMBean.limparForm}"
+							update="form-produto">
+						</p:commandButton>
+
+
+					</f:facet>
+				</p:toolbar>
+				<p:panelGrid id="grid-produto" styleClass="grid-produto"
+					style="width:100%">
+					<f:facet name="header">
+						<p:outputLabel value="Informe os dados do produto"></p:outputLabel>
+					</f:facet>
+					<p:row>
+						<p:column style="width:49%">
+							<p:selectOneMenu id="fornecedor" required="true"
+								requiredMessage="Campo fornecedor obritatório."
+								value="#{produtoMBean.codFornecedorSel}" style="width:100%">
+								<f:selectItem itemLabel="Fornecedor" itemValue="" />
+								<f:selectItems value="#{produtoMBean.fornecedores}" var="fornec"
+									itemLabel="#{fornec.nome}" itemValue="#{fornec.codigo}" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column style="width:2%" />
+						<p:column style="width:49%">
+							<p:selectOneMenu id="categoria" required="true"
+								requiredMessage="Campo categoria obritatório."
+								value="#{produtoMBean.codCategoriaSel}" style="width:100%">
+								<f:selectItem itemLabel="Categoria" itemValue="" />
+								<f:selectItems value="#{produtoMBean.categorias}" var="cat"
+									itemLabel="#{cat.descricao}" itemValue="#{cat.codigo}" />
+								<p:ajax event="change"
+									listener="#{produtoMBean.setSugestaoCodigo}"
+									process="categoria" update="codigo" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:selectOneMenu id="genero" value="#{produtoMBean.codGeneroSel}"
+								requiredMessage="Campo gênero obritatório." required="true"
+								style="width:100%">
+								<f:selectItem itemLabel="Gênero" itemValue="" />
+								<f:selectItem itemLabel="Masculino" itemValue="M" />
+								<f:selectItem itemLabel="Feminino" itemValue="F" />
+								<f:selectItem itemLabel="Unisex" itemValue="I" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column style="width:2%" />
+						<p:column>
+							<p:inputNumber id="codigo" required="true"
+								requiredMessage="Campo código é obritatório."
+								value="#{produtoMBean.novoP.codigo}" padControl="true"
+								decimalPlaces="0" thousandSeparator="" style="width:100%"
+								placeholder="Código" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:inputText id="codigoFornecedor" style="width:100%"
+								required="true"
+								requiredMessage="Campo código do fornecedor obritatório."
+								value="#{produtoMBean.novoP.codigoFornecedor}"
+								placeholder="Código do fornecedor" />
+						</p:column>
+						<p:column style="width:2%" />
+						<p:column>
+							<p:inputText id="descricao" style="width:100%" required="true"
+								requiredMessage="Campo descrição obritatório."
+								value="#{produtoMBean.novoP.descricao}" placeholder="Descrição" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:inputNumber id="valorCusto" symbol="R$" style="width:100%"
+								requiredMessage="Campo valor de custo obritatório."
+								required="true" value="#{produtoMBean.novoP.valorCusto}"
+								placeholder="Valor de custo">
+								<p:ajax listener="#{produtoMBean.calcularPrecoVenda}"
+									event="change" process="valorCusto" update="valorVenda" />
+							</p:inputNumber>
+						</p:column>
+						<p:column style="width:2%" />
+						<p:column>
+							<p:inputNumber id="valorVenda" symbol="R$" style="width:100%"
+								requiredMessage="Campo valor de venda obritatório."
+								required="true" value="#{produtoMBean.novoP.valorVenda}"
+								placeholder="Valor de venda" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:inputNumber id="peso" style="width:100%"
+								value="#{produtoMBean.novoP.peso}" placeholder="Peso em gramas" />
+						</p:column>
+						<p:column style="width:2%" />
+						<p:column>
+							<p:inputNumber id="comprimento" style="width:100%"
+								value="#{produtoMBean.novoP.comprimento}"
+								placeholder="Comprimento em cm" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:inputNumber id="espessura" style="width:100%"
+								value="#{produtoMBean.novoP.espessura}"
+								placeholder="Espessura em mm" />
+						</p:column>
+						<p:column style="width:2%" />
+						<p:column>
+							<p:selectOneMenu id="tamanho" style="width:100%"
+								value="#{produtoMBean.novoP.tamanho}">
+								<f:selectItem itemLabel="Tamanho" itemValue="" />
+								<f:selectItem itemLabel="PP" itemValue="pp" />
+								<f:selectItem itemLabel="P" itemValue="p" />
+								<f:selectItem itemLabel="M" itemValue="m" />
+								<f:selectItem itemLabel="G" itemValue="g" />
+								<f:selectItem itemLabel="GG" itemValue="gg" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="3">
+							<p:selectBooleanCheckbox value="#{produtoMBean.novoP.promocao}">
+								Promoção
+								<p:ajax listener="#{produtoMBean.setPromocao}"
+									update="descontoPorcentagem descontoValor" />
+							</p:selectBooleanCheckbox>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:inputNumber id="descontoPorcentagem" style="width:100%"
+								value="#{produtoMBean.novoP.descontoPorcentagem}" symbol="%"
+								symbolPosition="end" placeholder="% de desconto"
+								disabled="#{produtoMBean.promocao}">
+								<p:ajax listener="#{produtoMBean.novoP.calcularDescontoValor}"
+									event="change" process="descontoPorcentagem valorVenda"
+									update="descontoValor" />
+							</p:inputNumber>
+						</p:column>
+						<p:column style="width:2%" />
+						<p:column>
+							<p:inputNumber id="descontoValor" style="width:100%"
+								value="#{produtoMBean.novoP.descontoValor}"
+								placeholder="valor do desconto" symbol="R$"
+								disabled="#{produtoMBean.promocao}">
+								<p:ajax
+									listener="#{produtoMBean.novoP.calcularDescontoPorcentagem}"
+									event="change" process="descontoValor valorVenda"
+									update="descontoPorcentagem" />
+							</p:inputNumber>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+
+		</div>
+
+
+
+	</ui:define>
+</ui:composition>
+</html>
