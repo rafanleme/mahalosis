@@ -13,6 +13,7 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -61,6 +62,10 @@ public class ProdutoMBean implements Serializable {
 	private String codGeneroSel;
 	private boolean mostraFoto = false;
 	private boolean promocao = true;
+	private Produto produtoSel;
+	private String filtro;
+	
+	private SelectOneMenu selOneMenu;
 
 	@PostConstruct
 	public void init() {
@@ -87,7 +92,18 @@ public class ProdutoMBean implements Serializable {
 	public void setSugestaoCodigo() {
 		try {
 			novoP.setCodigo(pDao.getCodigoMax(codCategoriaSel) + 1);
+			setPreDescricao();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void setPreDescricao() {
+		CategoriaDAO cDao = new CategoriaDAO();
+		try {
+			novoP.setDescricao(cDao.buscarPorId(codCategoriaSel).getDescricao() + " ");
+		} catch (SQLException e) {
+			FacesUtils.setMensagem("Ops, ocorreu um erro", "");
 			e.printStackTrace();
 		}
 	}
@@ -158,6 +174,14 @@ public class ProdutoMBean implements Serializable {
 		if (!conversation.isTransient()) {
 			conversation.end();
 			System.out.println("Conversa encerrada");
+		}
+	}
+	
+	public void filtrar(){
+		try {
+			produtos = pDao.listarFiltro(filtro);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -251,5 +275,29 @@ public class ProdutoMBean implements Serializable {
 
 	public void setFotosSalvas(List<Foto> fotosSalvas) {
 		this.fotosSalvas = fotosSalvas;
+	}
+
+	public Produto getProdutoSel() {
+		return produtoSel;
+	}
+
+	public void setProdutoSel(Produto produtoSel) {
+		this.produtoSel = produtoSel;
+	}
+
+	public SelectOneMenu getSelOneMenu() {
+		return selOneMenu;
+	}
+
+	public void setSelOneMenu(SelectOneMenu selOneMenu) {
+		this.selOneMenu = selOneMenu;
+	}
+
+	public String getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(String filtro) {
+		this.filtro = filtro;
 	}
 }

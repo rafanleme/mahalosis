@@ -2,9 +2,12 @@ package mahalosis.vo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Date;
 
 import javax.management.monitor.MonitorSettingException;
+
+import mahalosis.dao.FotoDAO;
 
 public class Produto implements Serializable{
 
@@ -27,6 +30,7 @@ public class Produto implements Serializable{
 	private boolean promocao;
 	private Date dataCadastro;
 	private PessoaFisica usuarioCadastro;
+	private String fotoPrincipal;
 
 	public Produto() {
 		// TODO Auto-generated constructor stub
@@ -70,6 +74,14 @@ public class Produto implements Serializable{
 			BigDecimal valor = descontoValor.divide(valorVenda);
 			descontoPorcentagem = valor.multiply(new BigDecimal(100));
 		}
+	}
+	
+	public String getFotoPrincipal() throws SQLException{
+		if(fotoPrincipal == null){
+			FotoDAO fDao = new FotoDAO();
+			fotoPrincipal = fDao.buscarPrincipal(codigo);
+		}
+		return fotoPrincipal;
 	}
 
 	public Integer getCodigo() {

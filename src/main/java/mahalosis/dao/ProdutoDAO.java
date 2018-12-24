@@ -34,6 +34,28 @@ public class ProdutoDAO extends BaseDAO implements BasicDAO<Produto>{
 		}
 		return produtos;
 	}
+	
+	public List<Produto> listarFiltro(String filtro) throws SQLException {
+		String sql = "SELECT * FROM produto "
+				+ " WHERE cod_produto LIKE '%" + filtro + "%' "
+				+ " OR descricao LIKE '%" + filtro + "%' ";
+		ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		List<Produto> produtos = new ArrayList<>();
+		while(rs.next()){
+			Produto p = new Produto();
+			p.setCodigo(rs.getInt("cod_produto"));
+			p.setDescricao(rs.getString("descricao"));
+			p.setGenero(rs.getString("genero"));
+			p.setTamanho(rs.getString("tamanho"));
+			p.setValorCusto(rs.getBigDecimal("valor_custo"));
+			p.setValorVenda(rs.getBigDecimal("valor_venda"));
+			
+			
+			produtos.add(p);
+		}
+		return produtos;
+	}
 
 	
 	@Override

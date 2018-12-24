@@ -109,6 +109,19 @@ public class FotoDAO extends BaseDAO implements BasicDAO<Foto>, Serializable {
 		}
 		return null;
 	}
+	
+	public String buscarPrincipal(Integer codProduto) throws SQLException{
+		String sql = " SELECT * FROM foto "
+				+ " WHERE cod_produto = ? "
+				+ " AND principal = 1 ";
+		ps = con.prepareStatement(sql);
+		ps.setInt(1, codProduto);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()){
+			return rs.getString("nome_arquivo");
+		}
+		return null;
+	}
 
 	@Override
 	public boolean deletar(int codigo) throws SQLException {

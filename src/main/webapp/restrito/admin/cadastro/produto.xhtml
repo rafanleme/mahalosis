@@ -32,28 +32,45 @@
 						<span class="ui-separator"> <span
 							class="ui-icon ui-icon-grip-dotted-vertical" />
 						</span>
-
+						Filtrar por: <p:inputText placeholder="código ou descrição" id="txtFiltro" value="#{produtoMBean.filtro}">
+							<p:ajax event="keyup" process="txtFiltro" listener="#{produtoMBean.filtrar}" update="produtos"></p:ajax>
+						</p:inputText>
 					</f:facet>
 				</p:toolbar>
 				<p:dataGrid var="prod" value="#{produtoMBean.produtos}" columns="6"
-					layout="grid" rows="12" paginator="true" id="cars"
+					layout="grid" rows="12" paginator="true" id="produtos"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="6,12,16">
 
 					<f:facet name="header">Produtos</f:facet>
 
-					<p:panel header="#{prod.codigo}" style="text-align:center">
-						<h:panelGrid columns="1" style="width:100%">
-
-
-
-						</h:panelGrid>
-					</p:panel>
+					<p:commandLink oncomplete="PF('detalheDialog').show()"
+						styleClass="link-produto" update=":detalheProduto">
+						<p:panel header="#{prod.codigo}" styleClass="card-produto">
+							<h:panelGrid columns="1" style="width:100%">
+								<p:graphicImage
+									name="/fotos-produtos/#{prod.codigo}/#{prod.fotoPrincipal}"
+									width="100%" />
+								<b>#{prod.descricao}</b>
+								<br />
+								Valor Venda: <b>R$ #{prod.valorVenda}</b>
+							</h:panelGrid>
+						</p:panel>
+						<f:setPropertyActionListener value="#{prod}"
+							target="#{produtoMBean.produtoSel}" />
+					</p:commandLink>
 				</p:dataGrid>
 			</div>
 
 		</h:form>
 		<p:ajaxStatus onstart="startHandler();" onsuccess="endHandler();" />
+		<p:dialog header="Detalhes Produto" widgetVar="detalheDialog"
+			width="90%" height="90%" modal="true" showEffect="slide"
+			hideEffect="fade" resizable="false">
+			<p:outputPanel id="detalheProduto">
+					#{produtoMBean.produtoSel.codigo}
+			</p:outputPanel>
+		</p:dialog>
 		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 			closable="false" resizable="false" showHeader="true"
 			styleClass="loadingDialog">
@@ -62,155 +79,8 @@
 				<img src="/mahalosis/imgs/loading.gif" width="80px" alt="" />
 			</div>
 		</p:dialog>
-		<p:dialog widgetVar="cadastrarDialog" modal="true" resizable="false"
-			draggable="false" header="Novo cliente" styleClass="cadastrarDialog">
-			<div id="form-produto" class="form-cliente form-cliente-passo-um">
-				<h:form id="form-produto">
-					<p:toolbar>
-						<f:facet name="left">
-							<p:commandButton value="Salvar" icon="ui-icon-disk"
-								oncomplete="PF('cadastrarDialog').hide()"
-								actionListener="#{produtoMBean.salvar}" />
-							<p:commandButton value="Atualizar"
-								icon="ui-icon-arrowrefresh-1-e"
-								actionListener="#{clienteMBean.atualizar}">
-							</p:commandButton>
-							<p:confirmDialog global="true" showEffect="fade"
-								hideEffect="fade">
-								<p:commandButton value="Sim" type="button"
-									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-								<p:commandButton value="Não" type="button"
-									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-							</p:confirmDialog>
-							<span class="ui-separator"> <span
-								class="ui-icon ui-icon-grip-dotted-vertical" />
-							</span>
-
-						</f:facet>
-					</p:toolbar>
-					<p:panelGrid id="grid-produto" styleClass="grid-produto"
-						style="width:100%">
-						<f:facet name="header">
-							<p:outputLabel value="Informe os dados do produto"></p:outputLabel>
-						</f:facet>
-						<p:row>
-							<p:column style="width:49%">
-								<p:selectOneMenu id="fornecedor" required="true"
-									value="#{produtoMBean.codFornecedorSel}" style="width:100%">
-									<f:selectItem itemLabel="Fornecedor" itemValue="0" />
-									<f:selectItems value="#{produtoMBean.fornecedores}"
-										var="fornec" itemLabel="#{fornec.nome}"
-										itemValue="#{fornec.codigo}" />
-								</p:selectOneMenu>
-							</p:column>
-							<p:column style="width:2%" />
-							<p:column style="width:49%">
-								<p:selectOneMenu id="categoria" required="true"
-									value="#{produtoMBean.codCategoriaSel}" style="width:100%">
-									<f:selectItem itemLabel="Categoria" itemValue="" />
-									<f:selectItems value="#{produtoMBean.categorias}" var="cat"
-										itemLabel="#{cat.descricao}" itemValue="#{cat.codigo}" />
-								</p:selectOneMenu>
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:selectOneMenu id="genero"
-									value="#{produtoMBean.codGeneroSel}" required="true"
-									style="width:100%">
-									<f:selectItem itemLabel="Gênero" itemValue="" />
-									<f:selectItem itemLabel="Masculino" itemValue="M" />
-									<f:selectItem itemLabel="Feminino" itemValue="F" />
-									<f:selectItem itemLabel="Unisex" itemValue="I" />
-								</p:selectOneMenu>
-							</p:column>
-							<p:column style="width:2%" />
-							<p:column>
-								<p:inputText id="codFornecedor" required="true"
-									value="#{produtoMBean.novoP.codigoFornecedor}"
-									style="width:100%" placeholder="Código do Fornecedor" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column colspan="3">
-								<p:inputText id="descricao" style="width:100%" required="true"
-									value="#{produtoMBean.novoP.descricao}" placeholder="Descrição" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:inputNumber id="valorCusto" symbol="R$" style="width:100%"
-									required="true" value="#{produtoMBean.novoP.valorCusto}"
-									placeholder="Valor de custo" />
-							</p:column>
-							<p:column style="width:2%" />
-							<p:column>
-								<p:inputNumber id="valorVenda" symbol="R$" style="width:100%"
-									required="true" value="#{produtoMBean.novoP.valorVenda}"
-									placeholder="Valor de venda" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:inputNumber id="peso" style="width:100%"
-									value="#{produtoMBean.novoP.peso}" placeholder="Peso em gramas" />
-							</p:column>
-							<p:column style="width:2%" />
-							<p:column>
-								<p:inputNumber id="comprimento" style="width:100%"
-									value="#{produtoMBean.novoP.comprimento}"
-									placeholder="Comprimento em cm" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:inputNumber id="espessura" style="width:100%"
-									value="#{produtoMBean.novoP.espessura}"
-									placeholder="Espessura em mm" />
-							</p:column>
-							<p:column style="width:2%" />
-							<p:column>
-								<p:selectOneMenu id="tamanho" style="width:100%"
-									value="#{produtoMBean.novoP.tamanho}">
-									<f:selectItem itemLabel="Tamanho" itemValue="" />
-									<f:selectItem itemLabel="PP" itemValue="pp" />
-									<f:selectItem itemLabel="P" itemValue="p" />
-									<f:selectItem itemLabel="M" itemValue="m" />
-									<f:selectItem itemLabel="G" itemValue="g" />
-									<f:selectItem itemLabel="GG" itemValue="gg" />
-								</p:selectOneMenu>
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column colspan="3">
-								<p:selectBooleanCheckbox label="Promoção"
-									value="#{produtoMBean.novoP.promocao}" />Promoção
-					</p:column>
-						</p:row>
-						<p:row>
-							<p:column>
-								<p:inputNumber id="descontoPorcentagem" style="width:100%"
-									value="#{produtoMBean.novoP.descontoPorcentagem}"
-									placeholder="% de desconto" disabled="true" />
-							</p:column>
-							<p:column style="width:2%" />
-							<p:column>
-								<p:inputNumber id="descontoValor" style="width:100%"
-									value="#{produtoMBean.novoP.descontoValor}"
-									placeholder="valor do desconto" disabled="true" />
-							</p:column>
-						</p:row>
-					</p:panelGrid>
-				</h:form>
-			</div>
-
-		</p:dialog>
 
 		<script>
-			window.onbeforeunload = function()
-	        {
-				teste();
-	        }
 			var ajaxInProgress;
 			function startHandler() {
 				ajaxInProgress = setTimeout(function() {
@@ -222,7 +92,6 @@
 				PF('statusDialog').hide();
 				ajaxInProgress = null;
 			}
-			
 		</script>
 	</ui:define>
 </ui:composition>

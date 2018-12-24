@@ -34,6 +34,20 @@ public class CategoriaDAO implements Serializable{
 		return lista;
 	}
 	
+	public Categoria buscarPorId(Integer codCategoria) throws SQLException{
+		String sql = " SELECT * FROM categoria WHERE cod_categoria = ? ";
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		ps.setInt(1, codCategoria);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()){
+			Categoria c = new Categoria();
+			c.setCodigo(codCategoria);
+			c.setDescricao(rs.getString("descricao"));
+			return c;
+		}
+		return null;
+	}
 	
 
 	public boolean inserir(Categoria c) throws SQLException {
@@ -95,7 +109,6 @@ public class CategoriaDAO implements Serializable{
 			}
 		}
 		return false;
-
 	}
 
 	public boolean excluir(Categoria c) throws SQLException {

@@ -15,14 +15,14 @@
 			style="width: 99%; margin: auto !important; vertical-align: top">
 			<p:panelGrid style="width:100%;">
 				<p:row>
-					<p:column width="50%" style="vertical-align:top">
+					<p:column width="50%" style="vertical-align:top; max-width:50%;" >
 						<h:form id="form-produto">
 
 							<p:toolbar>
 								<f:facet name="left">
 									<p:commandButton value="Voltar" immediate="true"
 										icon="ui-icon-arrowthick-1-w"
-										action="form-produto-foto?faces-redirect=true">
+										action="produto?faces-redirect=true">
 									</p:commandButton>
 
 									<span class="ui-separator"> <span
@@ -58,11 +58,14 @@
 			</p:panelGrid>
 		</div>
 		<script>
+			var deixarAcoes = false;
 			function mostrarAcoes(nomeArquivo) {
-				document.getElementById("acoes"+nomeArquivo).style.display = "block";
+				document.getElementById("acoes" + nomeArquivo).style.display = "block";
 			}
 			function esconderAcoes(nomeArquivo) {
-				document.getElementById("acoes"+nomeArquivo).style.display = "none";
+				if (!deixarAcoes) {
+					document.getElementById("acoes" + nomeArquivo).style.display = "none";
+				}
 			}
 		</script>
 	</ui:define>

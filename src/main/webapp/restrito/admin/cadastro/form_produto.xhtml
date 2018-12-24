@@ -56,13 +56,14 @@
 						<p:column style="width:49%">
 							<p:selectOneMenu id="categoria" required="true"
 								requiredMessage="Campo categoria obritatório."
+								binding="#{produtoMBean.selOneMenu}"
 								value="#{produtoMBean.codCategoriaSel}" style="width:100%">
 								<f:selectItem itemLabel="Categoria" itemValue="" />
 								<f:selectItems value="#{produtoMBean.categorias}" var="cat"
 									itemLabel="#{cat.descricao}" itemValue="#{cat.codigo}" />
 								<p:ajax event="change"
 									listener="#{produtoMBean.setSugestaoCodigo}"
-									process="categoria" update="codigo" />
+									process="categoria" update="codigo descricao" />
 							</p:selectOneMenu>
 						</p:column>
 					</p:row>
@@ -98,6 +99,7 @@
 						<p:column>
 							<p:inputText id="descricao" style="width:100%" required="true"
 								requiredMessage="Campo descrição obritatório."
+								onfocus="this.selectionStart = this.selectionEnd = 500;"
 								value="#{produtoMBean.novoP.descricao}" placeholder="Descrição" />
 						</p:column>
 					</p:row>

@@ -2,6 +2,9 @@
 	margin: 0;
 	padding: 0;
 }
+a:hover{
+	text-decoration: none !important;
+}
 
 h3 {
 	margin: 5px !important;
@@ -209,3 +212,32 @@ ui.autocomplete {
 	border-radius: 5px;
 	
 }
+
+.card-produto{
+	padding: 1px;
+	box-shadow: 5px 5px 10px;
+}
+
+
+.card-produto .ui-panel-title{
+	color:white;
+	margin: 0px !important;
+}
+
+.card-produto .ui-panel-titlebar{
+	text-align:center;
+	border: 1px solid #327e04;
+	background: #459e00 url(/mahalosis/javax.faces.resource/images/ui-bg_highlight-hard_15_459e00_1x100.png.xhtml?ln=primefaces-south-street) 50% 50% repeat-x;
+}
+
+.card-produto .ui-panel-content{
+	padding: 1px;
+}
+
+.card-produto img{
+	border-radius: 6px;
+}
+.card-produto img :hover{
+	width: 102% !important;
+}
+
