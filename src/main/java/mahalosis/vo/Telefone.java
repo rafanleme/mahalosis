@@ -21,6 +21,12 @@ public class Telefone implements Serializable {
 		this.principal = principal;
 	}
 	
+	public void explodeCodArea(){
+		numero = numero.replaceAll("[ -]", "");
+		codArea = numero.substring(0, 2);
+		numero = numero.substring(2,numero.length());
+	}
+	
 	public Telefone() {
 
 	}
@@ -34,6 +40,17 @@ public class Telefone implements Serializable {
 	public String getNumero() {
 		return numero;
 	}
+	
+	public String getTelefoneCompleto() {
+		String numFormatado = "(" + codArea + ") ";
+		if(tipo.equals("cel")){
+			numFormatado += numero.substring(0, 5) + "-" + numero.substring(5);
+		}else{
+			numFormatado += numero.substring(0, 3) + "-" + numero.substring(3);
+		}
+		return numFormatado;
+	}
+	
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}

@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/basic-template.xhtml">
+	<ui:define name="title">Revendedor</ui:define>
+	<ui:define name="content">
+		<div class="content-left">
+			<h3>Cadastro de revendedor</h3>
+			<h:form id="formI">
+				<p:toolbar>
+					<f:facet name="left">
+						<p:commandButton id="btSalvar" update=":formL,formI"
+							value="Salvar" actionListener="#{revendedorMBean.salvar}"
+							icon="ui-icon-disk" />
+						<p:commandButton type="reset" value="Limpar" id="btLimpar"
+							update=":formI" immediate="true"
+							actionListener="#{revendedorMBean.limpar}"
+							icon="ui-icon-closethick" />
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+					</f:facet>
+				</p:toolbar>
+				<p:panelGrid columns="1" styleClass="form">
+					<p:outputLabel for="nome">Nome</p:outputLabel>
+					<p:inputText id="nome" required="true"
+						requiredMessage="Campo descrição obrigatório!"
+						value="#{revendedorMBean.novoR.nome}"
+						placeholder="Exemplo: João da Silva">
+					</p:inputText>
+					<p:message for="nome" />
+					<p:outputLabel for="data_nasc">Data de Nascimento</p:outputLabel>
+					<p:calendar id="data_nasc"
+						value="#{revendedorMBean.novoR.dataNasc}" required="true"
+						requiredMessage="Campo data obrigarório"
+						placeholder="Exemplo: 03/06/1988" pattern="dd/MM/yyyy" mask="true" />
+					<p:message for="data_nasc" />
+					<p:outputLabel for="data_contrato">Data do Contrato</p:outputLabel>
+					<p:calendar id="data_contrato"
+						value="#{revendedorMBean.novoR.dataContrato}" required="true"
+						requiredMessage="Campo data obrigarório"
+						placeholder="Exemplo: 01/06/2018" pattern="dd/MM/yyyy" mask="true" />
+					<p:message for="data_contrato" />
+
+					<p:selectOneRadio id="tipoTel" required="true"
+						requiredMessage="Campo tipo telefone obrigarório"
+						value="#{revendedorMBean.tipoTel}">
+						<f:selectItem itemLabel=" Fixo" itemValue="fix" />
+						<f:selectItem itemLabel=" Celular | Principal" itemValue="cel" />
+						<p:ajax event="change" update="numero"></p:ajax>
+					</p:selectOneRadio>
+
+					<p:inputMask id="numero" value="#{revendedorMBean.novoT.numero}"
+						placeholder="#{revendedorMBean.tipoTel eq 'cel' ? '99 99999-9999' : '99 9999-9999'}" required="true"
+						requiredMessage="Campo numero telefone obrigarório"
+						mask="#{revendedorMBean.tipoTel eq 'cel' ? '99 99999-9999' : '99 9999-9999'}" />
+
+					<p:outputLabel for="cpf">CPF</p:outputLabel>
+					<p:inputMask id="cpf" value="#{revendedorMBean.novoR.cpf}"
+						required="true" requiredMessage="Campo cpf obrigarório"
+						placeholder="Exemplo: 123.456.789-00" mask="999.999.999-99" />
+					<p:message for="cpf" />
+					<p:outputLabel for="rg">RG</p:outputLabel>
+					<p:inputText id="rg" value="#{revendedorMBean.novoR.rg}"
+						placeholder="Exemplo: 12.456.874-x">
+					</p:inputText>
+					<p:outputLabel for="ref">Referências</p:outputLabel>
+					<p:inputText id="ref" value="#{revendedorMBean.novoR.referencia}"
+						placeholder="Indicação de tal pessoa">
+					</p:inputText>
+					<p:outputLabel for="endereco">Endereço</p:outputLabel>
+					<p:inputText id="endereco" required="true"
+						requiredMessage="Campo endereço obrigatório"
+						value="#{revendedorMBean.novoR.endereco}"
+						placeholder="Exemplo: Rua das Flores">
+					</p:inputText>
+					<p:message for="endereco" />
+
+					<p:outputLabel for="numeroEndereco">Número</p:outputLabel>
+					<p:inputText id="numeroEndereco" required="true"
+						requiredMessage="Campo número do endereço obrigatório"
+						value="#{revendedorMBean.novoR.numeroEndereco}"
+						placeholder="Exemplo: 71A">
+					</p:inputText>
+					<p:message for="numeroEndereco" />
+
+					<p:outputLabel for="bairro">Bairro</p:outputLabel>
+					<p:inputText id="bairro" value="#{revendedorMBean.novoR.bairro}"
+						placeholder="Exemplo: Jd. das Flores">
+					</p:inputText>
+					<p:message for="bairro" />
+					<p:outputLabel for="estado">Estado</p:outputLabel>
+					<p:row>
+						<p:column colspan="2">
+							<p:selectOneMenu id="estado" style="width:100%" required="true"
+								requiredMessage="Campo estado obrigatório"
+								value="#{localMBean.estadoSel.uf}">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems value="#{localMBean.estados}" var="estado"
+									itemLabel="#{estado.nome}" itemValue="#{estado.uf}" />
+								<p:ajax listener="#{localMBean.listarCidades}" event="change"
+									update="cidade" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:outputLabel for="cidade">Cidade</p:outputLabel>
+					<p:selectOneMenu id="cidade" style="width:100%" required="true"
+						requiredMessage="Campo cidade obrigatório"
+						value="#{revendedorMBean.novoR.cidade.codigo}">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{localMBean.cidades}" var="cidade"
+							itemLabel="#{cidade.nome}" itemValue="#{cidade.codigo}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="cep">Cep</p:outputLabel>
+					<p:inputText id="cep" value="#{revendedorMBean.novoR.cep}"
+						placeholder="Exemplo: 13820-000">
+					</p:inputText>
+				</p:panelGrid>
+			</h:form>
+		</div>
+		<div class="content-right">
+			<h3>Lista de revendedores</h3>
+			<h:form id="formL">
+				<p:toolbar>
+					<f:facet name="left">
+						<p:commandButton value="Editar" update=":formI"
+							disabled="#{revendedorMBean.selR == null}"
+							actionListener="#{revendedorMBean.editar()}"
+							icon="ui-icon-pencil" />
+						<p:commandButton value="Excluir" update=":formI,:formL"
+							icon="ui-icon-trash" disabled="#{revendedorMBean.selR == null}"
+							actionListener="#{revendedorMBean.excluir}">
+							<p:confirm header="Confirmação"
+								message="Tem certeza que deseja excluir?" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:commandButton value="Atualizar" update=":formL"
+							icon="ui-icon-arrowrefresh-1-e"
+							actionListener="#{revendedorMBean.atualizar}">
+						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Sim" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+
+					</f:facet>
+				</p:toolbar>
+				<p:dataTable var="revend" emptyMessage="Nenhum revendedor cadastrado"
+					value="#{revendedorMBean.revendedores}"
+					filteredValue="#{revendedorMBean.filterRevendedores}"
+					selectionMode="single" selection="#{revendedorMBean.selR}"
+					rowKey="#{revend.codigo}" id="caracTable">
+					<p:ajax event="rowSelect" update=":formL"
+						listener="#{revendedorMBean.onRowSelect}" />
+					<p:column headerText="Nome" sortBy="#{revend.nome}"
+						filterBy="#{revend.nome}" style="width:19%">
+						<h:outputText value="#{revend.nome}" />
+					</p:column>
+					<p:column headerText="Telefone" style="width:19%">
+						<h:outputText value="#{revend.telefone.get(0).telefoneCompleto}"/>
+					</p:column>
+					<p:column headerText="Nome" sortBy="#{revend.cidade.nome}"
+						filterBy="#{revend.cidade.nome}" style="width:19%">
+						<h:outputText value="#{revend.cidade.nome} - #{revend.cidade.estado.uf}" />
+					</p:column>
+					<p:column headerText="Ativo" sortBy="#{revend.ativo? 'Ativo' : 'Desativado'}"
+						filterBy="#{revend.ativo? 'Ativo' : 'Desativado'}" style="width:19%">
+						<h:outputText value="#{revend.ativo? 'Ativo' : 'Desativado'}" />
+					</p:column>
+					
+				</p:dataTable>
+			</h:form>
+		</div>
+		<p:ajaxStatus onstart="startHandler();" onsuccess="endHandler();" />
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="true"
+			styleClass="loadingDialog">
+			<div>
+				<h4>Um momento por favor...</h4>
+				<img src="/mahalosis/imgs/loading.gif" width="80px" alt="" />
+			</div>
+		</p:dialog>
+		<script>
+			var ajaxInProgress;
+			function startHandler() {
+				ajaxInProgress = setTimeout(function() {
+					PF('statusDialog').show();
+				}, 1000);
+			}
+			function endHandler() {
+				clearTimeout(ajaxInProgress);
+				PF('statusDialog').hide();
+				ajaxInProgress = null;
+			}
+		</script>
+	</ui:define>
+</ui:composition>
+</html>
