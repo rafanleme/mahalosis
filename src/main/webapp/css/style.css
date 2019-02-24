@@ -125,10 +125,17 @@ html, body {
 }
 
 .ui-widget .input {
-	width: 100%;
+	width: 100% !important;
+	
 }
 
+
 .form input {
+	width: 100%;
+	text-align: center;
+}
+
+.ui-inputnumber input{
 	width: 100%;
 }
 
@@ -178,6 +185,10 @@ ui.autocomplete {
 
 .ui-panelgrid-cell {
 	padding: 2px !important;
+}
+
+.ui-calendar{
+	width:100% !important;
 }
 
 .loadingDialog {
@@ -241,3 +252,11 @@ ui.autocomplete {
 	width: 102% !important;
 }
 
+.input-data input{
+	width: 100%;
+	
+}
+
+.ui-autocomplete input{
+	width: 100%;
+}

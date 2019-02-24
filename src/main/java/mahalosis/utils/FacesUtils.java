@@ -23,7 +23,21 @@ public class FacesUtils {
 		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
 		return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
+	
+	public static File diretorioDocumentos(String documento){
+		File file = new File(
+				FacesContext.getCurrentInstance().getExternalContext()
+					.getRealPath("resources/documentos/" + documento));
 
+		System.out.println(file);
+
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+
+		return file;
+	}
+	
 	public static File diretorioFotosProdutos(Integer codProduto) {
 		File file = new File(
 				FacesContext.getCurrentInstance().getExternalContext()

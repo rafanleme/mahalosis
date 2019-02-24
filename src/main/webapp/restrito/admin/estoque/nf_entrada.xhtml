@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/basic-template.xhtml">
+	<ui:define name="title">Clientes</ui:define>
+	<ui:define name="content">
+		<h:form id="formL">
+			<div class="content-all">
+				<p:toolbar>
+					<f:facet name="left">
+						<p:commandButton value="Novo" ajax="false"
+							action="form_nfentrada?faces-redirect=true" 
+							icon="ui-icon-plus" />
+
+
+						<p:commandButton value="Atualizar" update=":formL"
+							icon="ui-icon-arrowrefresh-1-e"
+							actionListener="#{nfentradaMBean.atualizar}">
+						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Sim" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+
+					</f:facet>
+				</p:toolbar>
+				<p:dataTable var="nf" emptyMessage="Nenhuma nota fiscal cadastrada"
+					widgetVar="nfTable" value="#{nfentradaMBean.listaNFE}"
+					selectionMode="single"
+					filteredValue="#{nfentradaMBean.filterNFEntradas}"
+					rowKey="#{nf.codigo}" id="clienteTable">
+					<p:column headerText="Numero NF" sortBy="#{nf.numeroNF}"
+						filterBy="#{nf.numeroNF}" width="15%">
+						<h:outputText value="#{nf.numeroNF}" />
+					</p:column>
+					<p:column headerText="Fornecedor" sortBy="#{nf.fornecedor.nome}"
+						filterBy="#{nf.fornecedor.nome}" width="15%">
+						<h:outputText value="#{nf.fornecedor.nome}" />
+					</p:column>
+					<p:column headerText="Data Emissão" sortBy="#{nf.dataEmissao}"
+						filterBy="#{nf.dataEmissao}" width="15%">
+						<h:outputText value="#{nf.dataEmissao}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Data Cadastro" sortBy="#{nf.dataCadastro}"
+						filterMatchMode="contains"
+						filterBy="#{nf.dataCadastro}" width="15%">
+						<f:facet name="filter">
+							<p:calendar pattern="dd/MM/yyyy" onkeyup="PF('nfTable').filter()">
+								<p:ajax event="dateSelect" listener="#{nfentradaMBean.handleDateSelect}"/>
+							</p:calendar>
+						</f:facet>
+						<h:outputText value="#{nf.dataCadastro}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Valor Total" sortBy="#{nf.valorTotal}"
+						filterBy="#{nf.valorTotal}" width="15%">
+						R$ <h:outputText value="#{nf.valorTotal}" />
+					</p:column>
+					<p:column headerText="Documento"
+						width="15%">
+						
+					</p:column>
+
+				</p:dataTable>
+			</div>
+
+		</h:form>
+		<p:ajaxStatus onstart="startHandler();" onsuccess="endHandler();" />
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="true"
+			styleClass="loadingDialog">
+			<div>
+				<h4>Um momento por favor...</h4>
+				<img src="/mahalosis/imgs/loading.gif" width="80px" alt="" />
+			</div>
+		</p:dialog>
+		<p:hotkey bind="esc" handler="PF('cadastrarDialog').hide()" />
+		<script>
+			var ajaxInProgress;
+			function startHandler() {
+				ajaxInProgress = setTimeout(function() {
+					PF('statusDialog').show();
+				}, 1000);
+			}
+			function endHandler() {
+				clearTimeout(ajaxInProgress);
+				PF('statusDialog').hide();
+				ajaxInProgress = null;
+			}
+		</script>
+	</ui:define>
+</ui:composition>
+</html>

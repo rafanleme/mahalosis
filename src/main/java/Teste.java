@@ -1,15 +1,16 @@
+import java.math.BigDecimal;
 
 public class Teste {
 	
 	public static void main(String[] args) {
 		
-		float var = 17.75F;
+		BigDecimal a = new BigDecimal("100");
+		BigDecimal b = new BigDecimal("10");
 		
-		float inteiro = (int) var;
 		
-		float decimal = var - (int) var;
+		System.out.println(a.subtract(b));
 		
-		System.err.println((int) inteiro + ":" + (int) (decimal * 60));
+		
 	}
 
 }

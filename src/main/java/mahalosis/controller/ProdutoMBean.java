@@ -13,6 +13,7 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -47,6 +48,9 @@ public class ProdutoMBean implements Serializable {
 
 	@Inject
 	UsuarioMBean usuarioMBean;
+	
+	@Inject
+	NFEntradaMBean nfEntradaMBean;
 
 	private UploadedFile fotoPrincipal;
 
@@ -148,6 +152,7 @@ public class ProdutoMBean implements Serializable {
 		try {
 
 			if (pDao.inserir(novoP)) {
+				produtos = pDao.listar();
 				FacesUtils.setMensagem("Produto inserido com sucesso", "");
 				return "form-produto-foto?faces-redirect=true";
 			}
@@ -158,7 +163,8 @@ public class ProdutoMBean implements Serializable {
 		return null;
 
 	}
-
+	
+	
 	@Inject
 	private Conversation conversation;
 

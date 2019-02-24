@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import mahalosis.vo.Cliente;
 import mahalosis.vo.Produto;
 
 public class ProdutoDAO extends BaseDAO implements BasicDAO<Produto>{
@@ -14,6 +15,7 @@ public class ProdutoDAO extends BaseDAO implements BasicDAO<Produto>{
 		super();
 		
 	}
+	
 
 	@Override
 	public List<Produto> listar() throws SQLException {
@@ -33,6 +35,26 @@ public class ProdutoDAO extends BaseDAO implements BasicDAO<Produto>{
 			
 			produtos.add(p);
 		}
+		return produtos;
+	}
+	
+	public List<Produto> buscaComplete(String query) throws SQLException{
+		String sql = " SELECT * FROM produto WHERE cod_produto LIKE ? ";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		ps.setString(1, query + "%");
+		
+		ResultSet rs = ps.executeQuery();
+		List<Produto> produtos = new ArrayList<>();
+		while(rs.next()){
+			Produto p = new Produto();
+			p.setCodigo(rs.getInt("cod_produto"));
+			p.setDescricao(rs.getString("descricao"));
+			
+			produtos.add(p);
+		}
+			
 		return produtos;
 	}
 	
@@ -58,6 +80,7 @@ public class ProdutoDAO extends BaseDAO implements BasicDAO<Produto>{
 		return produtos;
 	}
 
+	
 	
 	@Override
 	public boolean editar(Produto t) throws SQLException {
